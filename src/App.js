@@ -1,7 +1,10 @@
 import React from 'react';
 import { combineReducers, createStore } from 'redux';
+import { Provider as ReduxProvider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
+
+import configureStore from "./redux/ConfigureStore";
 
 
 import homeReducer from "./components/create/reducer";
@@ -12,10 +15,6 @@ import LogIn from "./components/login";
 
 import logo from './logo.svg';
 import './App.css';
-
-
-
-
 
 
 let config = {
@@ -53,10 +52,13 @@ function onAuthRequired({history}){
   history.push('/');
 }
 
+const store = configureStore();
+
 
 function App() {
   return (
     <div className="App">
+  <ReduxProvider store={store}>
      <Router>
       <Security {...config}>
       <header >
@@ -75,7 +77,8 @@ function App() {
       </main> 
         </Security>
       </Router>
-    </div>
+    </ReduxProvider>
+  </div>
   );
 }
 
