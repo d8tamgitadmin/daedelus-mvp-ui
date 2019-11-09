@@ -1,5 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 
+import { withRouter } from 'react-router-dom';
+
 import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 

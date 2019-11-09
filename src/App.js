@@ -17,10 +17,11 @@ import LoginPage from "./components/auth/LoginPage";
 import RegistrationForm from "./components/auth/RegistrationForm";
 import NotFoundPage from "./components/home/404Page";
 import HomePage from "./components/home/HomePage";
+import ProfilePage from "./components/profile/ProfilePage.js";
 import './App.css';
 
 function onAuthRequired({ history }) {
-  history.push('/');
+  history.push('/home');
 }
 
 const config = {
@@ -46,6 +47,7 @@ export default function App() {
               <SecureRoute path="/create" exact={true} component={Create}/>
               <SecureRoute path="/ledger" exact={true} component={Ledger}/>
               <SecureRoute path="/about" exact={true} component={About}/>
+              <SecureRoute path="/profile" exact={true} component={ProfilePage}/>
               <Route path='/implicit/callback' component={ImplicitCallback}/>
               <Route component={NotFoundPage}/>
           </Switch>       

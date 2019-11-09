@@ -1,10 +1,12 @@
 import { combineReducers } from "redux"
 
 import invitationReducer from "./invitationReducer";
+import authReducer from "./authReducer";
 
 
 const rootReducer = combineReducers({
-    invitationReducer,
+    inviteData: invitationReducer,
+    authData: authReducer
 });
 
 export default rootReducer;
