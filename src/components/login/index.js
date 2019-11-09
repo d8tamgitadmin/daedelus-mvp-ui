@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,12 +15,6 @@ import Container from '@material-ui/core/Container';
 
 import { withAuth } from '@okta/okta-react';
 
-async function checkAuthentication() {
-    const authenticated = await this.props.auth.isAuthenticated();
-    if (authenticated !== this.state.authenticated) {
-      
-    }
-  }
 
 function Copyright() {
   return (
@@ -66,8 +60,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function LogIn() {
+
+
+
+export default withAuth(function LogIn(props) {
   const classes = useStyles();
+  const [authenticated, setAuthentication] = useState(null);
+
+  
+  useEffect(() => {
+    async function checkAuthentication() {
+      const current = await props.auth.isAuthenticated();
+      if (current !== authenticated) {
+        setAuthentication(current);
+      }
+    }
+
+    checkAuthentication();
+  
+  },[]);
+
 
   return (
     <Container component="main" maxWidth="sm">
@@ -118,4 +130,4 @@ export default function LogIn() {
       </Box>
     </Container>
   );
-}
+})

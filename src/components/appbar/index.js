@@ -39,7 +39,9 @@ export default function MenuAppBar() {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>            
-            <NavLink style={{ textDecoration: 'none' }} to="/" activeClassName="active"><Button color="inherit" className={classes.title}>Home</Button></NavLink>
+            <NavLink style={{ textDecoration: 'none' }} to="/" activeClassName="active"><Button color="inherit" className={classes.title}>Login</Button></NavLink>
+            <NavLink style={{ textDecoration: 'none' }} to="/home" activeClassName="active"><Button color="inherit" className={classes.title}>Home</Button></NavLink>
+            <NavLink style={{ textDecoration: 'none' }} to="/register" activeClassName="active"><Button color="inherit" className={classes.title}>Register </Button></NavLink>          
             <NavLink style={{ textDecoration: 'none' }} to="/Ledger" activeClassName="active"><Button color="inherit" className={classes.title}>Ledger  </Button></NavLink>
             <NavLink style={{ textDecoration: 'none' }} to="/Create" activeClassName="active"><Button color="inherit" className={classes.title}>Create </Button></NavLink>          
           </Toolbar>

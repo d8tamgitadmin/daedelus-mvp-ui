@@ -11,6 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import AddressForm from "./AddressForm";
 import { makeStyles } from '@material-ui/core/styles';
 
+import { withAuth } from '@okta/okta-react';
+
+
 const useStyles = makeStyles(theme => ({
     layout: {
         width: 'auto',
