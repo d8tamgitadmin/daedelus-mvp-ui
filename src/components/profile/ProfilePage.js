@@ -63,7 +63,7 @@ const ProfilePage = (props) => {
           setState({ authenticated:auth,
             currentUser:currentUser
          });
-         props.actions.createUserSuccess(currentUser);
+         props.actions.oktaLoginSuccess(currentUser);
         }
     }
 

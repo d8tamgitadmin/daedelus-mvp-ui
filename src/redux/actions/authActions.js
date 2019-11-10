@@ -1,9 +1,24 @@
 
 import * as AuthConstants from "../constants/authConstants";
 
-export function createUserSuccess(currentUser){
+export function oktaLoginSuccess(currentUser){
     return {
-        type: AuthConstants.CREATE_USER_SUCCESS,
+        type: AuthConstants.OKTA_LOGIN_SUCCESS,
         currentUser:currentUser
+    }
+}
+
+export function getUserDataSuccess(userData, token){
+    return {
+        type: AuthConstants.GET_USERDATA_SUCCESS,
+        userData: userData,
+        token: token
+    }
+}
+
+export function getUserDataError(error){
+    return {
+        type: AuthConstants.GET_USERDATA_ERROR,
+        error:error
     }
 }

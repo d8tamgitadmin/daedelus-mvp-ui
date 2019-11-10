@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { combineReducers, createStore } from 'redux';
 import { Provider as ReduxProvider } from "react-redux";
+
+import { ConnectedRouter } from 'connected-react-router'
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+
 import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
+import auth, {onAuthRequired} from  "./okta"
 
 import * as serviceWorker from './serviceWorker';
 
-import configureStore from "./redux/ConfigureStore";
-
+import initialState from "./redux/initialState";
+import configureStore, {history} from "./redux/ConfigureStore";
 
 import Create from "./components/create";
 import Ledger from "./components/ledger"
@@ -20,22 +24,14 @@ import HomePage from "./components/home/HomePage";
 import ProfilePage from "./components/profile/ProfilePage.js";
 import './App.css';
 
-function onAuthRequired({ history }) {
-  history.push('/home');
-}
-
-const config = {
-  issuer: 'https://dev-887734.okta.com/oauth2/default',
-  redirectUri: window.location.origin + '/implicit/callback',
-  clientId: '0oa1s0lajyxlbMcwr357'
-}
 
 export default function App() {
   return (
     <div className="App">
-  <ReduxProvider store={configureStore()}>
+  <ReduxProvider store={configureStore(initialState)}>
+    <ConnectedRouter history={history}>
      <Router>
-      <Security {...config} onAuthRequired={onAuthRequired}>
+      <Security auth={auth} onAuthRequired={onAuthRequired}>
       <header >
       <MenuAppBar/>
       </header>
@@ -54,6 +50,7 @@ export default function App() {
       </main> 
         </Security>
       </Router>
+      </ConnectedRouter>
     </ReduxProvider>
   </div>
   );

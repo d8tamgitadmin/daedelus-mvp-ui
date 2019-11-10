@@ -64,9 +64,10 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    "background":"green",
+    "background":"gray",
+    "color":"black",
     '&:hover': {
-      backgroundColor: 'lightgreen !important',
+      backgroundColor: 'darkgray !important',
     },
   },
   span:{

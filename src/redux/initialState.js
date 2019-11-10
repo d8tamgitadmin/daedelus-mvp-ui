@@ -10,7 +10,9 @@ const initialState = {
                 locale: "en",
                 login: "cloudadmin@d8tam.com",
                 timeZone: "America/Los_Angeles",
-            }
+            },
+            token: null,
+            error: null
         }
     }   
 }
