@@ -4,8 +4,15 @@ import { NavLink, withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { push, replace } from 'connected-react-router';
+import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 
 import { withAuth } from '@okta/okta-react';
+
+import * as authActions from "../../redux/actions/authActions";
+
+import * as authSelectors from "../../redux/selectors/authSelector";
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -105,6 +112,16 @@ const MenuAppBar = (props) => {
     useEffect(() => {
         checkAuthentication();
     })
+
+    const handleLogout = async () => {
+      
+      await props.auth.logout();      
+      await props.nav.push("/");
+    }
+
+    const handleAccount = () => {
+      props.nav.push(`/profile`)
+    }
   
     return (
       <div className={classes.root}>
@@ -120,7 +137,10 @@ const MenuAppBar = (props) => {
                 <NavLink style={{ textDecoration: 'none' }} to="/home" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Home</Button></NavLink>
             </MenuItem>
             <MenuItem>
-               <NavLink style={{ textDecoration: 'none' }} to="/register" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Register </Button></NavLink>          
+                <NavLink style={{ textDecoration: 'none' }} to="/invites" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Invites</Button></NavLink>
+            </MenuItem>
+            <MenuItem>
+                <NavLink style={{ textDecoration: 'none' }} to="/credentials" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Credentials</Button></NavLink>
             </MenuItem>
             <MenuItem>
                <NavLink style={{ textDecoration: 'none' }} to="/Ledger" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Ledger  </Button></NavLink>
@@ -140,10 +160,10 @@ const MenuAppBar = (props) => {
               </IconButton>
               <Menu keepMounted anchorEl={anchorProfileEl} open={Boolean(anchorProfileEl)} onClose={handleAccountClose}>
                     <MenuItem>
-                    <NavLink to="/profile" activeClassName="active"> <Button color="inherit" className={classes.menuButton}>Profile </Button></NavLink>
+                     <Button onClick={handleAccount} color="inherit" className={classes.menuButton}>Account </Button>
                   </MenuItem>
                   <MenuItem>
-                  <Button className={classes.appbarMenu} onClick={() => {props.auth.logout()}}>Logout</Button> 
+                  <Button className={classes.appbarMenu} onClick={handleLogout}>Logout</Button> 
             </MenuItem>
               </Menu>
           </>
@@ -153,10 +173,43 @@ const MenuAppBar = (props) => {
         </AppBar>
       </div>
     );
-  }   
+  }
+
+  MenuAppBar.propTypes = {
+    classes: PropTypes.object,
+    match:PropTypes.object,
+    location: PropTypes.object,
+    history: PropTypes.object
+  }
+
+const mapStateToProps = createStructuredSelector({
+    
+});
+
+const mapDispatchToProps =  (dispatch) => {
+return {
+  actions: {
+    ...bindActionCreators(authActions, dispatch)
+  },
+  nav: {
+    push: function() {
+      return dispatch(push.apply(this, arguments))
+    },
+    replace:function() {
+      return dispatch(replace.apply(this, arguments))
+    },
+  }
+};
+}
   
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+);
+
 
 export default compose(
   withAuth,
-  withRouter
+  withRouter,
+  withConnect
 )(MenuAppBar);

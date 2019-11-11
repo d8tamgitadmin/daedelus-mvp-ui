@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
-const HomePage = (props) => {
+const InvitePage = (props) => {
 
     const classes = useStyles();
 
@@ -71,7 +71,7 @@ const HomePage = (props) => {
             <Grid container item xs={12}>
                 <Paper className={classes.paper}>
                     <Grid item xs ={3}>
-                        <h2>Status</h2>
+                        <h2>Pending</h2>
                     </Grid>
                 <Grid item xs={9}>
                     
@@ -81,7 +81,17 @@ const HomePage = (props) => {
             <Grid container item xs={12}>
                 <Paper className={classes.paper}>
                     <Grid item xs ={3}>
-                        <h2> Relationships</h2>
+                        <h2>Confirmed</h2>
+                    </Grid>
+                <Grid item xs={9}>
+                    
+                </Grid>
+                </Paper>
+            </Grid>
+            <Grid container item xs={12}>
+                <Paper className={classes.paper}>
+                    <Grid item xs ={3}>
+                        <h2>Rejected</h2>
                     </Grid>
                 <Grid item xs={9}>
                     
@@ -117,4 +127,4 @@ export default compose(
     withAuth,
     withRouter,
     withConnect
-)(HomePage);
+)(InvitePage);

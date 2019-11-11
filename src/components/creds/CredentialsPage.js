@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
-const HomePage = (props) => {
+const CredentialsPage = (props) => {
 
     const classes = useStyles();
 
@@ -70,8 +70,18 @@ const HomePage = (props) => {
         <Container className={classes.container}>
             <Grid container item xs={12}>
                 <Paper className={classes.paper}>
+                    <Grid item xs ={5}>
+                        <h2>In Progress Schemas</h2>
+                    </Grid>
+                <Grid item xs={7}>
+                    
+                </Grid>
+                </Paper>
+            </Grid>
+            <Grid container item xs={12}>
+                <Paper className={classes.paper}>
                     <Grid item xs ={3}>
-                        <h2>Status</h2>
+                        <h2>Confirmed</h2>
                     </Grid>
                 <Grid item xs={9}>
                     
@@ -81,7 +91,7 @@ const HomePage = (props) => {
             <Grid container item xs={12}>
                 <Paper className={classes.paper}>
                     <Grid item xs ={3}>
-                        <h2> Relationships</h2>
+                        <h2>Expired</h2>
                     </Grid>
                 <Grid item xs={9}>
                     
@@ -117,4 +127,4 @@ export default compose(
     withAuth,
     withRouter,
     withConnect
-)(HomePage);
+)(CredentialsPage);

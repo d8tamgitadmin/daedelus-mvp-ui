@@ -11,7 +11,8 @@ import auth, {onAuthRequired} from  "./okta"
 import * as serviceWorker from './serviceWorker';
 
 import initialState from "./redux/initialState";
-import configureStore, {history} from "./redux/ConfigureStore";
+import configureStore from "./redux/ConfigureStore";
+import history from "./history"
 
 import Create from "./components/create";
 import Ledger from "./components/ledger"
@@ -23,6 +24,8 @@ import NotFoundPage from "./components/home/404Page";
 import HomePage from "./components/home/HomePage";
 import ProfilePage from "./components/profile/ProfilePage.js";
 import './App.css';
+import InvitePage from './components/invites/InvitePage';
+import CredentialsPage from './components/creds/CredentialsPage';
 
 
 export default function App() {
@@ -40,6 +43,8 @@ export default function App() {
               <Route path="/" exact component={LoginPage}/>              
               <Route path ="/register" component={RegistrationForm}/>
               <SecureRoute path="/home" exact={true} component={HomePage}/>
+              <SecureRoute path="/invites" exact={true} component={InvitePage}/>
+              <SecureRoute path="/credentials" exact={true} component={CredentialsPage}/>
               <SecureRoute path="/create" exact={true} component={Create}/>
               <SecureRoute path="/ledger" exact={true} component={Ledger}/>
               <SecureRoute path="/about" exact={true} component={About}/>

@@ -1,4 +1,6 @@
 import {  Auth } from '@okta/okta-react';
+import history from "../history";
+
 
 export const config = {
     issuer: 'https://dev-887734.okta.com/oauth2/default',
@@ -7,7 +9,8 @@ export const config = {
   }
 
 export function onAuthRequired({ history }) {
+
     history.push('/');
   }
-const auth = new Auth({...config});
-  export default auth;
+const auth = new Auth({history,...config});
+export default auth;

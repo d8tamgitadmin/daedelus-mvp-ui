@@ -1,18 +1,16 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { routerMiddleware } from 'connected-react-router'
-import { createBrowserHistory } from 'history';
-
 
 import rootReducer from "./reducers";
 
+import history from "../history";
 
 // Sagas
 import authSaga from "./sagas/userDataSaga";
 
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 
-export const history = createBrowserHistory();
 
 export default function configureStore(initialState) {
     const composeEnhancers = 

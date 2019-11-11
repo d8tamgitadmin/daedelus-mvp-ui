@@ -1,6 +1,21 @@
 
 import * as AuthConstants from "../constants/authConstants";
 
+
+export function oktaLoginReplay(){
+    return {
+        type: AuthConstants.OKTA_LOGIN_REPLAY
+    }
+}
+
+export function oktaLogin(username,password){
+    return {
+        type: AuthConstants.OKTA_LOGIN,
+        username:username,
+        password:password
+    }
+}
+
 export function oktaLoginSuccess(currentUser){
     return {
         type: AuthConstants.OKTA_LOGIN_SUCCESS,

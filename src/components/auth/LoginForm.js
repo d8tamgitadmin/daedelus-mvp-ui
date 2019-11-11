@@ -133,14 +133,23 @@ const LoginForm = (props) => {
 
    const handleSubmit = (e) => {
         e.preventDefault();
+       
+      
+        
        setWorking(true);
+
+        // props.actions.oktaLogin(username, password);
+        
         oktaAuth
         .signIn({
           username: username,
           password: password
         })
         .then(res => {
-          setSessionToken(res.sessionToken);
+         
+         // props.actions.oktaLoginSuccess({id:res.id, ...res.user});
+          props.auth.redirect({sessionToken: res.sessionToken});
+         
         }
           
         )
@@ -149,6 +158,8 @@ const LoginForm = (props) => {
             setError(err.message);
           console.log(err.statusCode + ' error', err);
         });
+        
+        
     }
 
     
@@ -160,8 +171,7 @@ const LoginForm = (props) => {
       return (
         <div>
           {
-              sessionToken ? 
-              props.auth.redirect({sessionToken: sessionToken}) :
+              !sessionToken &&
               <Container  component="main" maxWidth="sm">
               {working  ? 
           <CircularProgress color='inherit' className={classes.spinner} size={120}/>       
