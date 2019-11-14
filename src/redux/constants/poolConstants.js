@@ -1,0 +1,3 @@
+export const SEED_POOL = "SEED_POOL";
+export const SEED_POOL_SUCCESS = "SEED_POOL_SUCCESS";
+export const SEED_POOL_ERROR = "SEED_POOL_ERROR";

@@ -15,7 +15,7 @@ import configureStore from "./redux/ConfigureStore";
 import history from "./history"
 
 import Create from "./components/create";
-import Ledger from "./components/ledger"
+import Ledger from "./components/ledger/LedgerPage"
 import MenuAppBar from "./components/appbar";
 import About from "./components/about";
 import LoginPage from "./components/auth/LoginPage";
@@ -23,6 +23,7 @@ import RegistrationForm from "./components/auth/RegistrationForm";
 import NotFoundPage from "./components/home/404Page";
 import HomePage from "./components/home/HomePage";
 import ProfilePage from "./components/profile/ProfilePage.js";
+import AccountsPage from "./components/accounts/AccountsPage.js";
 import './App.css';
 import InvitePage from './components/invites/InvitePage';
 import CredentialsPage from './components/creds/CredentialsPage';
@@ -44,6 +45,7 @@ export default function App() {
               <Route path ="/register" component={RegistrationForm}/>
               <SecureRoute path="/home" exact={true} component={HomePage}/>
               <SecureRoute path="/invites" exact={true} component={InvitePage}/>
+              <SecureRoute path="/accounts" exact={true} component={AccountsPage}/>
               <SecureRoute path="/credentials" exact={true} component={CredentialsPage}/>
               <SecureRoute path="/create" exact={true} component={Create}/>
               <SecureRoute path="/ledger" exact={true} component={Ledger}/>

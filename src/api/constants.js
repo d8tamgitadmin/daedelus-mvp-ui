@@ -1,5 +1,5 @@
 const API_PORT = 8080;
-const API_SERVER = `http://localhost:${API_PORT}`;
+export const API_SERVER = `http://localhost:${API_PORT}`;
 export const CORS_ORIGIN = "http://localhost:3000";
 
 export const AUTH_HEADERS = function(token) {

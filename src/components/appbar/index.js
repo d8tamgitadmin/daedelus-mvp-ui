@@ -137,6 +137,9 @@ const MenuAppBar = (props) => {
                 <NavLink style={{ textDecoration: 'none' }} to="/home" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Home</Button></NavLink>
             </MenuItem>
             <MenuItem>
+                <NavLink style={{ textDecoration: 'none' }} to="/accounts" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Accounts</Button></NavLink>
+            </MenuItem>
+            <MenuItem>
                 <NavLink style={{ textDecoration: 'none' }} to="/invites" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Invites</Button></NavLink>
             </MenuItem>
             <MenuItem>
@@ -160,7 +163,7 @@ const MenuAppBar = (props) => {
               </IconButton>
               <Menu keepMounted anchorEl={anchorProfileEl} open={Boolean(anchorProfileEl)} onClose={handleAccountClose}>
                     <MenuItem>
-                     <Button onClick={handleAccount} color="inherit" className={classes.menuButton}>Account </Button>
+                     <Button onClick={handleAccount} color="inherit" className={classes.menuButton}>Profile </Button>
                   </MenuItem>
                   <MenuItem>
                   <Button className={classes.appbarMenu} onClick={handleLogout}>Logout</Button> 
