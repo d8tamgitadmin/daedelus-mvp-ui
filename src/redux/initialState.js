@@ -12,7 +12,7 @@ const initialState = {
         error:null
     } ,
     accountData:{
-        account: null,
+        account: accountStorage.getAccount() || null,
         userAccounts: null,
         isFetchingUserAccounts: false,
         isWorkingUserAccount: false,

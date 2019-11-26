@@ -1,5 +1,4 @@
-import { combineReducers } from "redux"
-
+import { combineReducers } from "redux";
 import { connectRouter } from 'connected-react-router';
 
 import invitationReducer from "./invitationReducer";

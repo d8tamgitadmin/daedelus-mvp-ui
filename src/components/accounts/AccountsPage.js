@@ -1,10 +1,11 @@
 import React, { useState, useEffect }  from 'react';
 
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { compose, bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { push, replace } from 'connected-react-router';
 
 import { withAuth } from '@okta/okta-react';
 
@@ -19,7 +20,7 @@ import { withStyles,makeStyles } from '@material-ui/core/styles';
 import { CircularProgress, Container, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import CreateAccountModule from "./CreateAccountModule";
 
@@ -41,7 +42,8 @@ const AccountsPage = (props) => {
     const { account, currentUser, userAccounts, isFetchingUserAccounts } = props;
     const classes = useStyles();
     const [state, setState] = useState({
-        authenticated:null,        
+        authenticated:null,    
+        route:false
     });
    
     const onSubmit = account => {
@@ -50,13 +52,19 @@ const AccountsPage = (props) => {
         // save 
     }
 
+    const goToDetail = account => e => {       
+        props.actions.getAccountDetail(account);
+        props.nav.push(`/accounts/detail/${account.id}`)    
+        setState({...state,route:true})
+    }
+
     useEffect(() => {
         props.actions.getUserAccounts(currentUser.id);
     },[])
 
     return(
         <div className={classes.root}>
-         <Container maxWidth="md">
+        <Container maxWidth="md">
             <Grid container spacing={2}>
                 <Grid item xs={12}>    
                     <Paper className={classes.paper}>            
@@ -67,7 +75,10 @@ const AccountsPage = (props) => {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                     <Grid container>
-                            <Grid item xs={4}>
+                            <Grid item xs={1}>
+                                
+                            </Grid>
+                            <Grid item xs={3}>
                             Name
                             </Grid>
                             <Grid item xs={2}>
@@ -92,8 +103,11 @@ const AccountsPage = (props) => {
                         {userAccounts && userAccounts.map(userAccount => (
                             <Paper className={classes.paper}>            
                                 <Grid container spacing={4}>
-                                        <Grid item xs={4}>
-                                            {userAccount.name}
+                                        <Grid item xs={1}>
+                                            <Button onClick={goToDetail(userAccount)} color="inherit"><MoreVertIcon/></Button>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                        {userAccount.name}                                       
                                         </Grid>
                                         <Grid item xs={2}>
                                             {userAccount.accountType}
@@ -111,8 +125,7 @@ const AccountsPage = (props) => {
                 }  
                 </Grid>
             </Grid>
-            </Container>
-           
+            </Container>      
         </div>
         )    
 }
@@ -141,6 +154,14 @@ const mapDispatchToProps =  (dispatch) => {
 return {
   actions: {
     ...bindActionCreators(accountActions, dispatch)
+  },
+  nav: {
+    push: function() {
+      return dispatch(push.apply(this, arguments))
+    },
+    replace:function() {
+      return dispatch(replace.apply(this, arguments))
+    },
   }
 };
 }

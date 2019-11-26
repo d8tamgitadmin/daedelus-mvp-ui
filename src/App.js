@@ -3,7 +3,7 @@ import { combineReducers, createStore } from 'redux';
 import { Provider as ReduxProvider } from "react-redux";
 
 import { ConnectedRouter } from 'connected-react-router'
-import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 
 import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
 import auth, {onAuthRequired} from  "./okta"
@@ -27,36 +27,36 @@ import AccountsPage from "./components/accounts/AccountsPage.js";
 import './App.css';
 import InvitePage from './components/invites/InvitePage';
 import CredentialsPage from './components/creds/CredentialsPage';
+import AccountDetailPage from './components/accounts/AccountDetailPage';
 
 
 export default function App() {
   return (
     <div className="App">
   <ReduxProvider store={configureStore(initialState)}>
-    <ConnectedRouter history={history}>
-     <Router>
+    <ConnectedRouter history={history}>     
       <Security auth={auth} onAuthRequired={onAuthRequired}>
       <header >
       <MenuAppBar/>
       </header>
-      <main className="App-header">       
-          <Switch>
-              <Route path="/" exact component={LoginPage}/>              
-              <Route path ="/register" component={RegistrationForm}/>
-              <SecureRoute path="/home" exact={true} component={HomePage}/>
-              <SecureRoute path="/invites" exact={true} component={InvitePage}/>
-              <SecureRoute path="/accounts" exact={true} component={AccountsPage}/>
-              <SecureRoute path="/credentials" exact={true} component={CredentialsPage}/>
-              <SecureRoute path="/create" exact={true} component={Create}/>
-              <SecureRoute path="/ledger" exact={true} component={Ledger}/>
-              <SecureRoute path="/about" exact={true} component={About}/>
-              <SecureRoute path="/profile" exact={true} component={ProfilePage}/>
-              <Route path='/implicit/callback' component={ImplicitCallback}/>
-              <Route component={NotFoundPage}/>
-          </Switch>       
-      </main> 
+          <main className="App-header">       
+              <Switch>
+                  <Route path="/" exact component={LoginPage}/>              
+                  <Route path ="/register" component={RegistrationForm}/>
+                  <SecureRoute path="/home" exact={true} component={HomePage}/>
+                  <SecureRoute path="/invites" exact={true} component={InvitePage}/>
+                  <SecureRoute path="/accounts" exact={true} component={AccountsPage}/>
+                  <SecureRoute path="/accounts/detail/:id"  component={AccountDetailPage}/>
+                  <SecureRoute path="/credentials" exact={true} component={CredentialsPage}/>
+                  <SecureRoute path="/create" exact={true} component={Create}/>
+                  <SecureRoute path="/ledger" exact={true} component={Ledger}/>
+                  <SecureRoute path="/about" exact={true} component={About}/>
+                  <SecureRoute path="/profile" exact={true} component={ProfilePage}/>
+                  <Route path='/implicit/callback' component={ImplicitCallback}/>
+                  <Route component={NotFoundPage}/>
+              </Switch>       
+          </main> 
         </Security>
-      </Router>
       </ConnectedRouter>
     </ReduxProvider>
   </div>

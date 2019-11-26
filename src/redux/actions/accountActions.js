@@ -22,3 +22,10 @@ export function getUserAccountsError(error){
         error: error
     }
 }
+
+export function getAccountDetail(account){
+    return {
+        type: constants.GET_ACCOUNT_DETAIL,
+        account: account
+    }
+}
