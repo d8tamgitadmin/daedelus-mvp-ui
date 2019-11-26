@@ -37,3 +37,9 @@ export function getUserDataError(error){
         error:error
     }
 }
+
+export function resetUserData(){
+    return {
+        type: AuthConstants.RESET_USER_DATA
+    }
+}

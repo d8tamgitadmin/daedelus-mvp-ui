@@ -11,6 +11,7 @@
     "@okta/okta-react": "^1.2.3",
     "connected-react-router": "^6.5.2",
     "date-fns": "^2.1.0",
+    "local-storage": "^2.0.0",
     "material-ui-dropzone": "^2.4.5",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",

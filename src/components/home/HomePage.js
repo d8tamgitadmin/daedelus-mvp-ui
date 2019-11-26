@@ -46,6 +46,8 @@ const useStyles = makeStyles(theme => ({
 
 const HomePage = (props) => {
 
+    const {currentUser} = props;
+
     const classes = useStyles();
 
     const [state, setState] = useState({
@@ -56,12 +58,20 @@ const HomePage = (props) => {
     const checkAuthentication = async () =>{
         const auth = await props.auth.isAuthenticated();
         if (auth !== state.authenticated) {
-          setState({ authenticated:auth});
+        
+            if(currentUser == null){
+                const currentUser = await props.auth.getUser();
+                setState({ authenticated:auth,
+                  currentUser:currentUser
+               });
+               props.actions.oktaLoginSuccess(currentUser);
+            }
+         
         }
     }
 
     useEffect(() => {
-        checkAuthentication();
+        checkAuthentication();       
     })
 
     return(

@@ -114,7 +114,7 @@ const MenuAppBar = (props) => {
     })
 
     const handleLogout = async () => {
-      
+      props.actions.resetUserData();
       await props.auth.logout();      
       await props.nav.push("/");
     }
