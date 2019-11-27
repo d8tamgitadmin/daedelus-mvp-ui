@@ -20,14 +20,23 @@ export default function configureStore(initialState) {
 
     const sagaMiddleware = createSagaMiddleware();
     const middleWares = [routerMiddleware(history),sagaMiddleware, reduxImmutableStateInvariant()];
-
+    const hotRootReducer =  rootReducer(history);
     const store = createStore(
-        rootReducer(history), 
+        hotRootReducer, 
         initialState,
         composeEnhancers(
             applyMiddleware(
                 ...middleWares
                 )));
+
+    // hot module for dev
+    if (process.env.NODE_ENV !== 'production') {
+        if (module.hot) {
+          module.hot.accept('./reducers', () => {
+            store.replaceReducer(hotRootReducer);
+          });
+        }
+      }
 
    // then run the saga
    sagaMiddleware.run(authSaga);

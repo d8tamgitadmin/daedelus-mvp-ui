@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Children} from 'react';
 import { NavLink, withRouter } from "react-router-dom";
 
 import PropTypes from 'prop-types';
@@ -14,7 +14,11 @@ import * as authActions from "../../redux/actions/authActions";
 
 import * as authSelectors from "../../redux/selectors/authSelector";
 
-import { makeStyles } from '@material-ui/core/styles';
+import MainNavList from "./MainNavList";
+import MainNavProfile from "./MainiNavProfile";
+
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -24,69 +28,101 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { CssBaseline } from '@material-ui/core';
+import Container from "@material-ui/core/Container";
+
+
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    color:"white"
+    display: 'flex',
   },
+  appBar: {
+    background:"black",
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  appBarSpacer: theme.mixins.toolbar,
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: 36,
   },
-  title: {
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 1,
+    },
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+  },
+  content: {
     flexGrow: 1,
-    color:"white",
-    "text-decoration": "none"
+    height:'100vh',
+    overflow:'auto',
+    padding: theme.spacing(2),
   },
-  active:{
-      
-      "text-decoration": "none"
-  },
-  appbar:{ 
-    background: 'black', 
-    color:"white" 
-  },
-  menuIcon:{
-    color:"white" 
-  },
-  menuButton:{
-   
-    color:"black",
-    "text-decoration": "none"
-    
-  },
-  appbarMenu:{
-    color:"white" ,
-    background: 'black', 
-    "text-decoration": "none"
-  },
-  accountCirleIcon:{
-    color:"white"
+  title:{
+    flexGrow:1,
   }
-
- 
-}));
-
+}))
 
 const MenuAppBar = (props) => {
     const classes = useStyles();
+    const theme = useTheme();
 
-    const [showMenu, setMenu] = useState(false);
+    const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorProfileEl, setProfileAnchorEl] = useState(null);
     const [showAccountMenu, setAccountMenu] = useState(false);
     const [authenticated, setAuthentication] = useState(false);
 
     const handleMenuOpen = (e) => {
-      e.preventDefault();
-      setAnchorEl(e.currentTarget);
-      setMenu({showMenu:true});    
+      setOpen(true)
     }
 
     const handleMenuClose = (e) => {
-      e.preventDefault();
-      setAnchorEl(null);
-      setMenu({showMenu:false});
+      setOpen(false)
     }
 
     const handleAccountOpen = (e) => {
@@ -125,40 +161,27 @@ const MenuAppBar = (props) => {
   
     return (
       <div className={classes.root}>
-        <AppBar className={classes.appbar} position="static">
-          <Toolbar>
-          {authenticated &&
-            <IconButton edge="start" onClick={handleMenuOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>}     
-            <Menu keepMounted anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-           
-            <MenuItem>
-                <NavLink style={{ textDecoration: 'none' }} to="/home" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Home</Button></NavLink>
-            </MenuItem>
-            <MenuItem>
-                <NavLink style={{ textDecoration: 'none' }} to="/accounts" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Accounts</Button></NavLink>
-            </MenuItem>
-            <MenuItem>
-                <NavLink style={{ textDecoration: 'none' }} to="/invites" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Invites</Button></NavLink>
-            </MenuItem>
-            <MenuItem>
-                <NavLink style={{ textDecoration: 'none' }} to="/credentials" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Credentials</Button></NavLink>
-            </MenuItem>
-            <MenuItem>
-               <NavLink style={{ textDecoration: 'none' }} to="/Ledger" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Ledger  </Button></NavLink>
-
-            </MenuItem>
-            <MenuItem>
-              <NavLink style={{ textDecoration: 'none' }} to="/Create" activeClassName="active"><Button color="inherit" className={classes.menuButton}>Create </Button></NavLink>          
-            </MenuItem>
-            </Menu> 
-            <Typography variant="h6" className={classes.title}>
-            DAEDALUS DEMO 
+      <CssBaseline />
+        <AppBar  
+        color="primary"
+        position="absolute"
+        className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleMenuOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+          <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap className={classes.title}>
+            Daedalus POC
           </Typography>
-             { authenticated &&
-           <>
-              <IconButton edge="start" onClick={handleAccountOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
+          <IconButton edge="start" onClick={handleAccountOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
               <AccountCircle className={classes.accountCirleIcon} />
               </IconButton>
               <Menu keepMounted anchorEl={anchorProfileEl} open={Boolean(anchorProfileEl)} onClose={handleAccountClose}>
@@ -169,11 +192,39 @@ const MenuAppBar = (props) => {
                   <Button className={classes.appbarMenu} onClick={handleLogout}>Logout</Button> 
             </MenuItem>
               </Menu>
-          </>
-           }   
-          </Toolbar>
-         
+        </Toolbar>      
         </AppBar>
+        <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+        open={open}
+      >
+      <div className={classes.toolbar}>
+          <IconButton onClick={handleMenuClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider/>
+        <MainNavProfile/>
+        <Divider />
+        <MainNavList/>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer}/>
+        <Container minWidth="lg">
+          {props.children}
+        </Container>
+        
+      </main>
       </div>
     );
   }
@@ -182,7 +233,8 @@ const MenuAppBar = (props) => {
     classes: PropTypes.object,
     match:PropTypes.object,
     location: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
+    children: PropTypes.node
   }
 
 const mapStateToProps = createStructuredSelector({

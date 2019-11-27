@@ -9,6 +9,7 @@
     "@material-ui/pickers": "^3.2.7",
     "@material-ui/styles": "^4.6.0",
     "@okta/okta-react": "^1.2.3",
+    "clsx": "^1.0.4",
     "connected-react-router": "^6.5.2",
     "date-fns": "^2.1.0",
     "local-storage": "^2.0.0",

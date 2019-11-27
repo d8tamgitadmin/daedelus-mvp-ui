@@ -17,7 +17,7 @@ import * as authSelectors from "../../redux/selectors/authSelector";
 
 import Button from '@material-ui/core/Button';
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container, Typography } from '@material-ui/core';
+import { CircularProgress, Container, Typography, CssBaseline, Card, CardMedia, CardContent, CardActions } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -29,11 +29,33 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 2,
       },
+      heroContent:{
+          backgroundColor: theme.palette.background.paper,
+          padding: theme.spacing(4,0,6)
+      },
       paper: {
         padding: theme.spacing(4),
         textAlign: 'left',
         color: theme.palette.text.secondary
       },
+      cardGrid:{
+          paddingTop: theme.spacing(8),
+          paddingBottom: theme.spacing(8)
+      },
+      card:{
+          height:'100%',
+          display:'flex',
+          flexDirection:"column"
+      },
+      cardContent:{
+          flexGrow:1
+      },
+      CardMedia:{
+          paddingTop:'56.25%'
+      },
+      heroButtons:{
+          marginTop:  theme.spacing(4)
+      }
 
 }));
 
@@ -63,70 +85,62 @@ const AccountsPage = (props) => {
     },[])
 
     return(
-        <div className={classes.root}>
-        <Container maxWidth="md">
-            <Grid container spacing={2}>
-                <Grid item xs={12}>    
-                    <Paper className={classes.paper}>            
-                        <h2>Accounts</h2>
-                        <CreateAccountModule account={account} onSubmit={onSubmit}/>
-                    </Paper>
-                </Grid>  
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                    <Grid container>
-                            <Grid item xs={1}>
-                                
-                            </Grid>
-                            <Grid item xs={3}>
-                            Name
-                            </Grid>
-                            <Grid item xs={2}>
-                             Type
-                            </Grid>
-                            <Grid item xs={3}>
-                             Is Visible
-                            </Grid>
-                            <Grid item xs={3}>
-                                Created
+        <React.Fragment>
+            <CssBaseline/>
+            <div className={classes.heroContent}>
+                <Container maxWidth="sm">
+                    <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                        Accounts
+                    </Typography>
+                    <Typography variant="h5" align="center" color="textSecondary" paragraph>
+                        This is a list of your accounts.
+                    </Typography>
+                    <div className={classes.heroButtons}>
+                        <Grid container spacing={2} justify="center">
+                            <Grid item>
+                            <CreateAccountModule account={account} onSubmit={onSubmit}/>
                             </Grid>
                         </Grid>
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                {isFetchingUserAccounts == true ?  
-                    <Paper className={classes.paper}>                
-                       <CircularProgress/>
-                    </Paper>
-                    :
-                   <>
-                        {userAccounts && userAccounts.map(userAccount => (
-                            <Paper className={classes.paper}>            
-                                <Grid container spacing={4}>
-                                        <Grid item xs={1}>
-                                            <Button onClick={goToDetail(userAccount)} color="inherit"><MoreVertIcon/></Button>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                        {userAccount.name}                                       
-                                        </Grid>
-                                        <Grid item xs={2}>
+                    </div>
+                </Container>
+            </div>
+            {isFetchingUserAccounts == true ?  
+                <Paper className={classes.paper}>                
+               <CircularProgress/>
+            </Paper> 
+            :
+            <Container className={classes.cardGrid} maxWidth="md">
+                <Grid container spacing={4}>
+                    {userAccounts && userAccounts.map(userAccount => (
+                        <Grid item key={userAccount} xs={12} sm={6} md={4}>
+                            <Card className={classes.card}>
+                                <CardMedia
+                                    className={classes.CardMedia}
+                                    image="https://source.unsplash.com/random"
+                                    title="Sample Account"/>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {userAccount.name}
+                                        </Typography>
+                                        <Typography gutterBottom variant="subtitle1">
                                             {userAccount.accountType}
-                                        </Grid>
-                                        <Grid item xs={3}>
+                                        </Typography>
+                                        <Typography variant="subtitle1">
                                             {userAccount.visibilityType}
-                                        </Grid>
-                                        <Grid item xs={3}>
+                                        </Typography>
+                                        <Typography variant="subtitle1">
                                             {userAccount.created.split('T')[0]}
-                                        </Grid>
-                                </Grid>
-                            </Paper>
-                        ))}
-                  </>
-                }  
+                                        </Typography>
+                                        <CardActions>
+                                        <Button size="small" color="secondary" onClick={goToDetail(userAccount)} color="inherit">View</Button>
+                                        </CardActions>
+                                    </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
                 </Grid>
-            </Grid>
-            </Container>      
-        </div>
+            </Container> } 
+        </React.Fragment>
         )    
 }
                 
