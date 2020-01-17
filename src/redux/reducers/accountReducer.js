@@ -15,6 +15,15 @@ export default function invitationReducer(state=initialState.accountData, action
         case constants.GET_ACCOUNT_DETAIL:
             accountStorage.setAccount(action.account);
             return {...state, account:action.account}
+        case constants.CREATE_ACCOUNT:
+            accountStorage.setAccount(null);
+            return { ...state, account:null,isFetchingUserAccounts:true}
+        case constants.CREATE_ACCOUNT_SUCCESS:
+            accountStorage.setAccount(action.account);
+            return {...state, account: action.account, isFetchingUserAccounts: false}
+        case constants.CREATE_ACCOUNT_ERROR:
+            accountStorage.setAccount(null);
+            return { ...state, account:null,isFetchingUserAccounts:false}
         default:
             return state;
     }

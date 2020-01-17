@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
       },
       heroContent:{
           backgroundColor: theme.palette.background.paper,
-          padding: theme.spacing(4,0,6)
+          padding: theme.spacing(4),
       },
       paper: {
         padding: theme.spacing(4),
@@ -56,7 +56,6 @@ const useStyles = makeStyles(theme => ({
       heroButtons:{
           marginTop:  theme.spacing(4)
       }
-
 }));
 
 const AccountsPage = (props) => {
@@ -69,8 +68,8 @@ const AccountsPage = (props) => {
     });
    
     const onSubmit = account => {
-       
-        alert('bullshit')
+    
+       props.actions.createAccount(account);
         // save 
     }
 
@@ -88,21 +87,16 @@ const AccountsPage = (props) => {
         <React.Fragment>
             <CssBaseline/>
             <div className={classes.heroContent}>
-                <Container maxWidth="sm">
-                    <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                        Accounts
-                    </Typography>
-                    <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                        This is a list of your accounts.
-                    </Typography>
-                    <div className={classes.heroButtons}>
-                        <Grid container spacing={2} justify="center">
-                            <Grid item>
-                            <CreateAccountModule account={account} onSubmit={onSubmit}/>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Container>
+                <Grid container maxWidth="sm">
+                    <Grid xs={8} item>
+                        <Typography component="h3" variant="h3" align="left" color="textPrimary" gutterBottom>
+                            Accounts
+                        </Typography>
+                    </Grid>
+                    <Grid xs={4} item>
+                    <CreateAccountModule currentUser={currentUser} account={account} onSubmit={onSubmit}/>
+                    </Grid>
+                </Grid>
             </div>
             {isFetchingUserAccounts == true ?  
                 <Paper className={classes.paper}>                
@@ -113,7 +107,7 @@ const AccountsPage = (props) => {
                 <Grid container spacing={4}>
                     {userAccounts && userAccounts.map(userAccount => (
                         <Grid item key={userAccount} xs={12} sm={6} md={4}>
-                            <Card className={classes.card}>
+                            <Card className={classes.card} onClick={goToDetail(userAccount)} >
                                 <CardMedia
                                     className={classes.CardMedia}
                                     image="https://source.unsplash.com/random"
@@ -131,9 +125,7 @@ const AccountsPage = (props) => {
                                         <Typography variant="subtitle1">
                                             {userAccount.created.split('T')[0]}
                                         </Typography>
-                                        <CardActions>
-                                        <Button size="small" color="secondary" onClick={goToDetail(userAccount)} color="inherit">View</Button>
-                                        </CardActions>
+                                        
                                     </CardContent>
                             </Card>
                         </Grid>

@@ -10,6 +10,13 @@ export const GET_USER_ACCOUNTS = {
     'route':(userId) =>  `${API_SERVER}/api/v1/account/user/${userId}`
   };
 
+export const POST_USER_ACCOUNTS = {
+    'method': 'POST',
+    'route':  `${API_SERVER}/api/v1/account/`
+}
+
+
+
 export async function GetUserAccounts(userId) {
     let token = await oktaAuth.getAccessToken();
 
@@ -21,3 +28,17 @@ export async function GetUserAccounts(userId) {
         headers: AUTH_HEADERS(token)
       })
 }
+
+export async function CreateUserAccounts(account){
+    let token = await oktaAuth.getAccessToken();
+    
+    return fetch(POST_USER_ACCOUNTS.route, {
+        method: POST_USER_ACCOUNTS.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token),
+        body: JSON.stringify(account)
+    });
+}
+

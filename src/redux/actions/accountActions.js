@@ -29,3 +29,24 @@ export function getAccountDetail(account){
         account: account
     }
 }
+
+export function createAccount(account) {
+    return {
+        type: constants.CREATE_ACCOUNT,
+        account: account
+    }
+}
+
+export function createAccountSuccess(account){
+    return {
+        type: constants.CREATE_ACCOUNT_SUCCESS,
+        account: account
+    }
+}
+
+export function createAccountError(error){
+    return {
+        type: constants.CREATE_ACCOUNT_ERROR,
+        error: error
+    }
+}

@@ -24,6 +24,8 @@ const AccountWallets = (props) => {
                         <TableCell>Agent</TableCell> 
                         <TableCell>WalletId</TableCell>
                         <TableCell>WalletKey</TableCell>
+                        <TableCell>DID</TableCell>
+                        <TableCell>Verakey</TableCell>
                         <TableCell>Created</TableCell>
                     </TableRow>
                 </TableHead>
@@ -33,6 +35,8 @@ const AccountWallets = (props) => {
                             <TableCell>{row.agent}</TableCell>
                             <TableCell>{row.walletId}</TableCell>
                             <TableCell>{row.walletKey}</TableCell>
+                            <TableCell>{row.did}</TableCell>
+                            <TableCell>{row.verakey}</TableCell>
                             <TableCell>{row.modified.split('T')[0]}</TableCell>
                         </TableRow>
                     ))}
