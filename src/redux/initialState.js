@@ -13,11 +13,15 @@ const initialState = {
     } ,
     accountData:{
         account: accountStorage.getAccount() || null,
+        fetchingAccounts: false,
+        accountsMessage: null,
+        accounts:[],
         userAccounts: null,
         isFetchingUserAccounts: false,
         isWorkingUserAccount: false,
-        error: null
-    }
+        error: null,
+    },
+   
 }
 
 export default initialState;

@@ -23,6 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import CreateAccountModule from "./CreateAccountModule";
+import CurrentAccountSlide from "../common/CurrentAccountSlide";
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 const AccountsPage = (props) => {
 
-    const { account, currentUser, userAccounts, isFetchingUserAccounts } = props;
+    const { account, currentUser,currentAccount, userAccounts, isFetchingUserAccounts } = props;
     const classes = useStyles();
     const [state, setState] = useState({
         authenticated:null,    
@@ -74,10 +75,12 @@ const AccountsPage = (props) => {
     }
 
     const goToDetail = account => e => {       
+        // this also sets it as the current account
         props.actions.getAccountDetail(account);
         props.nav.push(`/accounts/detail/${account.id}`)    
         setState({...state,route:true})
     }
+    
 
     useEffect(() => {
         props.actions.getUserAccounts(currentUser.id);
@@ -86,11 +89,12 @@ const AccountsPage = (props) => {
     return(
         <React.Fragment>
             <CssBaseline/>
+            {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToDetail}  />}
             <div className={classes.heroContent}>
                 <Grid container maxWidth="sm">
                     <Grid xs={8} item>
-                        <Typography component="h3" variant="h3" align="left" color="textPrimary" gutterBottom>
-                            Accounts
+                        <Typography variant="subtitle1" align="left" color="textPrimary" gutterBottom>
+                         {currentUser.firstName}' Accounts
                         </Typography>
                     </Grid>
                     <Grid xs={4} item>
@@ -107,7 +111,7 @@ const AccountsPage = (props) => {
                 <Grid container spacing={4}>
                     {userAccounts && userAccounts.map(userAccount => (
                         <Grid item key={userAccount} xs={12} sm={6} md={4}>
-                            <Card className={classes.card} onClick={goToDetail(userAccount)} >
+                            <Card className={classes.card}  >
                                 <CardMedia
                                     className={classes.CardMedia}
                                     image="https://source.unsplash.com/random"
@@ -125,6 +129,10 @@ const AccountsPage = (props) => {
                                         <Typography variant="subtitle1">
                                             {userAccount.created.split('T')[0]}
                                         </Typography>
+                                        <CardActions>
+                                            <Button variant="contained" color="secondary" onClick={goToDetail(userAccount)}>
+                                            Set As Current</Button>
+                                        </CardActions>
                                         
                                     </CardContent>
                             </Card>
@@ -145,7 +153,8 @@ AccountsPage.propTypes = {
     currentUser: PropTypes.object,
     userAccounts: PropTypes.object,
     isFetchingUserAccounts: PropTypes.bool,
-    account: PropTypes.object
+    account: PropTypes.object,
+    currentAccount: PropTypes.object,
 };
 
 
@@ -154,6 +163,7 @@ const mapStateToProps = createStructuredSelector({
    userAccounts: selectors.makeSelectUserAccounts(),
    isFetchingUserAccounts: selectors.makeSelectIsFetchingUserAccounts(),
    account: selectors.makeSelectAccount(),
+   currentAccount: selectors.makeSelectAccount(),
 });
 
 const mapDispatchToProps =  (dispatch) => {

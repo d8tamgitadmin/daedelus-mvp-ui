@@ -24,6 +24,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import SearchIcon from '@material-ui/icons/Search';
 
 const MenuNavList = (props) => {
     return (
@@ -32,6 +33,10 @@ const MenuNavList = (props) => {
             <ListItem button component={NavLink} to="/home">
                 <ListItemIcon><HomeIcon/></ListItemIcon>
                 <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/search">
+                <ListItemIcon><SearchIcon/></ListItemIcon>
+                <ListItemText primary="Search" />
           </ListItem>
           <ListItem button component={NavLink} to="/accounts">
                 <ListItemIcon><AccountBoxIcon/></ListItemIcon>

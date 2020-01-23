@@ -10,9 +10,14 @@ export const GET_USER_ACCOUNTS = {
     'route':(userId) =>  `${API_SERVER}/api/v1/account/user/${userId}`
   };
 
+export const GET_PUBLIC_ACCOUNTS = {
+    'method': 'GET',
+    'route': `${API_SERVER}/api/v1/account/`
+}
+
 export const POST_USER_ACCOUNTS = {
     'method': 'POST',
-    'route':  `${API_SERVER}/api/v1/account/`
+    'route': `${API_SERVER}/api/v1/account/`
 }
 
 
@@ -40,5 +45,17 @@ export async function CreateUserAccounts(account){
         headers: AUTH_HEADERS(token),
         body: JSON.stringify(account)
     });
+}
+
+export async function GetPublicAccounts(){
+    let token = await oktaAuth.getAccessToken();
+
+   return fetch(GET_PUBLIC_ACCOUNTS.route, {
+        method: GET_PUBLIC_ACCOUNTS.method,
+        withCredentials: true,
+        mode: 'cors',
+        credentials: 'include',
+        headers: AUTH_HEADERS(token)
+      })
 }
 

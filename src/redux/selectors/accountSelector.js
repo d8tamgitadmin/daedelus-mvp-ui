@@ -16,3 +16,18 @@ export const makeSelectAccount = () => createSelector(
     makeSelectAccountData(),
     (substate) => substate.account
 )
+
+export const makeSelectIsFetchingPublicAccounts = () => createSelector(
+    makeSelectAccountData(),
+    (substate) => substate.fetchingAccounts
+)
+
+export const makeSelectPublicAccountsMessage = () => createSelector(
+    makeSelectAccountData(),
+    (substate) => substate.accountsMessage
+)
+
+export const makeSelectPublicAccounts = () => createSelector(
+    makeSelectAccountData(),
+    (substate) => substate.accounts
+)

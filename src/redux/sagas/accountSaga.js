@@ -9,7 +9,11 @@ import {
     getUserAccountsSuccess,
     getUserAccountsError,
     createAccountSuccess,
-    createAccountError
+    createAccountError,
+    getPublicAccountsSuccess,
+    getPublicAccountsError,
+    createAccountLinkSuccess,
+    createAccountLinkError
      } 
      from "../actions/accountActions";
 
@@ -28,9 +32,7 @@ function* getUserAccountSaga(action) {
 }
 
 function* createAccountSaga(action){
-    try {       
-
-
+    try {      
         const requestWallet = {
             key: action.account.wallets[0].walletId,
             credentialKey: action.account.wallets[0].walletKey,
@@ -50,17 +52,91 @@ function* createAccountSaga(action){
                 yield put(createAccountError("empty payload"))
             }
         }
-
-     
-
     } catch(e){
         yield put(createAccountError(e))
+    }
+}
+
+function* getPublicAccountsSaga(action){
+    try {
+        const publicAccountsResponse = yield call(accountApi.GetPublicAccounts);
+        const responseData = yield call([publicAccountsResponse, publicAccountsResponse.json]);
+        if(responseData){
+            yield put(getPublicAccountsSuccess(responseData));
+        } else {
+            yield put(getPublicAccountsError("no accounts found."));
+        }
+    } catch(e){
+        yield put(getPublicAccountsError(e))
+    }
+}
+
+function* createAccountLinkSaga(action){
+
+        const generateDate = () => {
+            const today = new Date();
+            let dd = today.getDate().toString();
+            let mm = (today.getMonth()+1).toString(); 
+            let yyyy = today.getFullYear().toString();
+            if(dd<10) 
+            {
+                dd='0'+dd;
+            } 
+
+            if(mm<10) 
+            {
+                mm='0'+mm;
+            } 
+            return yyyy+"-"+mm+"-"+dd;
+    }
+
+    try {
+
+        let {currentAccount, targetAccount} = action;
+        let request = {
+            walletName: currentAccount.wallets[0].walletId,
+            walletCredentials:"{}",
+            walletkey: currentAccount.wallets[0].walletKey,
+        }
+
+        // Generate new Wallet DID and Verakey, specify wallet key and credentials
+        const createNewDIDResponse = yield call(agentApi.CreateRelationshipRequest,request);
+        const createNewDIDResponseData = yield call([createNewDIDResponse, createNewDIDResponse.json])
+      
+         let newWallet = {
+            "agent":"daedalus-api",
+            "walletId":currentAccount.wallets[0].walletId,
+            "walletKey":currentAccount.wallets[0].walletKey,
+            "did": createNewDIDResponseData.did,
+            "verakey": createNewDIDResponseData.verkey,
+            "created": generateDate(),
+            "modified": generateDate()
+         }
+
+         const createNewWalletForAccountResponse = yield call()
+
+        // Construct Invite with new did, verkey, and nonce
+        let invite ={
+
+        }
+
+
+        
+       
+
+        
+        // Update Current Account with invites (invites:[])
+
+    } catch(e){
+        yield put(createAccountLinkError(e));
     }
 }
 
 function* accountRootSaga() {
     yield takeLatest(ActionTypes.GET_USER_ACCOUNTS, getUserAccountSaga); 
     yield takeLatest(ActionTypes.CREATE_ACCOUNT, createAccountSaga);
+    yield takeLatest(ActionTypes.GET_PUBLIC_ACCOUNTS, getPublicAccountsSaga);
+    yield takeLatest(ActionTypes.CREATE_ACCOUNT_LINK, createAccountLinkSaga);
 }
 
 export default accountRootSaga;

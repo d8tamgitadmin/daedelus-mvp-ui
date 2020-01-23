@@ -12,9 +12,12 @@ export default function invitationReducer(state=initialState.accountData, action
             return {...state, userAccounts:action.userAccounts, isFetchingUserAccounts:false}        
         case constants.GET_USER_ACCOUNTS_ERROR:
             return {...state, userAccounts:null, isFetchingUserAccounts:false, error:action.error}  
+        
+        case constants.SET_CURRENT_ACCOUNT:
         case constants.GET_ACCOUNT_DETAIL:
             accountStorage.setAccount(action.account);
             return {...state, account:action.account}
+            
         case constants.CREATE_ACCOUNT:
             accountStorage.setAccount(null);
             return { ...state, account:null,isFetchingUserAccounts:true}
@@ -24,6 +27,21 @@ export default function invitationReducer(state=initialState.accountData, action
         case constants.CREATE_ACCOUNT_ERROR:
             accountStorage.setAccount(null);
             return { ...state, account:null,isFetchingUserAccounts:false}
+
+        case constants.GET_PUBLIC_ACCOUNTS:
+            return {...state, fetchingAccounts: true, accounts:[], accountsMessage: null};
+        case constants.GET_PUBLIC_ACCOUNTS_SUCCESS:
+            return {...state, fetchingAccounts: false, accounts: action.accounts, accountsMessage: null};
+        case constants.GET_PUBLIC_ACCOUNTS_ERROR:
+            return {...state, fetchingAccounts: false, accounts: [], accountsMessage: action.error}
+
+        case constants.CREATE_ACCOUNT_LINK:
+            return {...state};
+        case constants.CREATE_ACCOUNT_LINK_SUCCESS:
+            return {...state};
+        case constants.CREATE_ACCOUNT_ERROR:
+            return {...state};
+
         default:
             return state;
     }
