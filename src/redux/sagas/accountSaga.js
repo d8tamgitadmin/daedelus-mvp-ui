@@ -2,6 +2,7 @@ import { spawn, call, put, select, takeLatest,take } from 'redux-saga/effects';
 
 import * as accountApi from "../../api/accountApi";
 import * as agentApi from "../../api/agentApi";
+import * as inviteApi from "../../api/inviteApi";
 import * as ActionTypes from "../constants/accountConstants";
 
 
@@ -103,6 +104,7 @@ function* createAccountLinkSaga(action){
         const createNewDIDResponse = yield call(agentApi.CreateRelationshipRequest,request);
         const createNewDIDResponseData = yield call([createNewDIDResponse, createNewDIDResponse.json])
       
+     
          let newWallet = {
             "agent":"daedalus-api",
             "walletId":currentAccount.wallets[0].walletId,
@@ -117,7 +119,31 @@ function* createAccountLinkSaga(action){
 
         // Construct Invite with new did, verkey, and nonce
         let invite ={
+   /*
 
+                    invite: 
+                    public long id;
+
+                public Long sourceAccountId;
+
+                public String RequestingDID;
+
+                public String RequestingVerkey;
+
+                public String nonce;
+
+                public Long targetAccountId;
+
+                public String ResponseDID;
+
+                public String ResponseVerkey;
+
+                public InvitationStatus status;
+
+                public Date created;
+
+                public Date modified;
+                */
         }
 
 

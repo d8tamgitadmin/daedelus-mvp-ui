@@ -40,8 +40,11 @@ const CreateLinkModule = props => {
     }
 
     return (
+        
         <React.Fragment>
+       
             <Button onClick={()=> setOpen(true)} color="primary" variant="contained">Link</Button>
+            {currentAccount && (
             <Dialog className={classes.dialog} open={open}
             onClose={() => setOpen(false)}
             aria-labelledby="form-dialog-title">
@@ -78,7 +81,7 @@ const CreateLinkModule = props => {
 
                 </form>
             </Dialog>
-
+        )}
         </React.Fragment>
     )
 }

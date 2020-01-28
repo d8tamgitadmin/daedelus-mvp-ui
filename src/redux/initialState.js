@@ -2,7 +2,15 @@ import * as accountStorage from "../storage/accountStorage";
 
 
 const initialState = {
-    invitation:null,
+    inviteData:{
+        invitation:null,
+        isFetchingSourceInvites: false,
+        isFetchingTargetInvites: false,
+        sourceInvitesErrorMessage: null,
+        targetInvitesErrorMessage: null,
+        sourceInvites:[],
+        targetInvites:[]
+    },
     authData:{
         currentUser: accountStorage.getUserData() || null
     },

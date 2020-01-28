@@ -1,6 +1,8 @@
 import React, { useState, useEffect }  from 'react';
 
 import { withRouter } from 'react-router-dom';
+import { push, replace } from 'connected-react-router';
+
 import { compose, bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,14 +11,23 @@ import { createStructuredSelector } from 'reselect';
 import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
-import * as authActions from "../../redux/actions/authActions";
-
-import * as authSelectors from "../../redux/selectors/authSelector";
-
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container } from '@material-ui/core';
+import { CircularProgress, Container, Typography, CssBaseline } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+
+
+import * as authActions from "../../redux/actions/authActions";
+import * as authSelectors from "../../redux/selectors/authSelector";
+
+import * as accountSelectors from "../../redux/selectors/accountSelector";
+import * as accountActions from "../../redux/actions/accountActions";
+
+import * as inviteSelectors from "../../redux/selectors/invitationSelector";
+import * as inviteActions from "../../redux/actions/invitationActions";
+
+import CurrentAccountSlide from "../common/CurrentAccountSlide";
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,6 +59,8 @@ const InvitePage = (props) => {
 
     const classes = useStyles();
 
+    const {currentAccount} = props;
+
     const [state, setState] = useState({
         authenticated:null,
         
@@ -62,57 +75,95 @@ const InvitePage = (props) => {
 
     useEffect(() => {
         checkAuthentication();
-    })
+    },[])
+
+    const goToAccountProfile = account => e => {     
+        e.preventDefault();  
+        props.actions.getAccountDetail(account);
+        props.nav.push(`/accounts/detail/${account.id}`)    
+    }
 
     return(
 
-        <div>
+        <React.Fragment>
+        <CssBaseline/>
+        
         <Container className={classes.container}>
+        <Grid container item xs={12}>
+        {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
+
+        </Grid>
+        <Paper className={classes.paper}>
             <Grid container item xs={12}>
-                <Paper className={classes.paper}>
                     <Grid item xs ={3}>
-                        <h2>Pending</h2>
+                        <Typography variant="subtitle1" component="p">
+                            Pending
+                        </Typography>
                     </Grid>
-                <Grid item xs={9}>
-                    
+                    <Grid item xs={9}>
+                        
+                    </Grid>
+                    <Grid item xs={12}>
+
+                    </Grid>
                 </Grid>
-                </Paper>
-            </Grid>
+            </Paper>
             <Grid container item xs={12}>
-                <Paper className={classes.paper}>
-                    <Grid item xs ={3}>
-                        <h2>Confirmed</h2>
-                    </Grid>
-                <Grid item xs={9}>
-                    
-                </Grid>
-                </Paper>
-            </Grid>
+            <Paper className={classes.paper}>
             <Grid container item xs={12}>
-                <Paper className={classes.paper}>
                     <Grid item xs ={3}>
-                        <h2>Rejected</h2>
+                        <Typography variant="subtitle1" component="p">
+                            Requesting
+                        </Typography>
                     </Grid>
-                <Grid item xs={9}>
-                    
+                    <Grid item xs={9}>
+                        
+                    </Grid>
+                    <Grid item xs={12}>
+
+                    </Grid>
                 </Grid>
-                </Paper>
+            </Paper>
             </Grid>
         </Container>
-    </div>
+    </React.Fragment>
     
    );
+}
+InvitePage.propTypes = {
+    classes: PropTypes.object,
+    match:PropTypes.object,
+    location: PropTypes.object,
+    history: PropTypes.object
 }
 
 const mapStateToProps = createStructuredSelector({
     currentUser: authSelectors.makeSelectCurrentUser(),
+    currentAccount: accountSelectors.makeSelectAccount(),
+    invite: inviteSelectors.makeSelectInvitation(),
+    sourceInvites: inviteSelectors.makeSelectSourceInvitations(),
+    isFetchingSourceInvites: inviteSelectors.makeSelectIsFetchingSourceInvitations(),
+    sourceInvitesErrorMessage: inviteSelectors.makeSelectSourceInvitationsErrorMessages(),
+    targetInvites: inviteSelectors.makeSelectTargetInvitations(),
+    isFetchingTargetInvites: inviteSelectors.makeSelectIsFetchingTargetInvitations(),
+    targetInvitesErrorMessage: inviteSelectors.makeSelectTargetInvitationsErrorMessages(),
+    
 });
 
 const mapDispatchToProps =  (dispatch) => {
 return {
   actions: {
-    ...bindActionCreators(authActions, dispatch)
-  },
+    ...bindActionCreators(authActions, dispatch),
+    ...bindActionCreators(accountActions, dispatch),
+    ...bindActionCreators(inviteActions, dispatch)
+  },nav: {
+    push: function() {
+      return dispatch(push.apply(this, arguments))
+    },
+    replace:function() {
+      return dispatch(replace.apply(this, arguments))
+    },
+  }
 };
 }
 

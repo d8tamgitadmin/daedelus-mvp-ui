@@ -25,6 +25,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import SearchIcon from '@material-ui/icons/Search';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 const MenuNavList = (props) => {
     return (
@@ -48,11 +49,11 @@ const MenuNavList = (props) => {
           </ListItem>
           <ListItem button component={NavLink} to="/credentials">
                 <ListItemIcon><AccountBalanceIcon/></ListItemIcon>
-                <ListItemText primary="Credentials" />
+                <ListItemText primary="KYC" />
           </ListItem>
           <ListItem button component={NavLink} to="/Ledger">
-                <ListItemIcon><DynamicFeedIcon/></ListItemIcon>
-                <ListItemText primary="Ledger" />
+                <ListItemIcon><HelpOutlineIcon/></ListItemIcon>
+                <ListItemText primary="Help" />
           </ListItem>
         </List>
       </React.Fragment>)

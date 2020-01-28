@@ -37,10 +37,11 @@ const useStyles = makeStyles(theme => ({
     },
 
     paper:{
-        margin:theme.spacing(3, 0, 2),
+        margin:theme.spacing(3),
+        padding: theme.spacing(3),
         background:'white',
-        height:"30vh"    ,
-        width:"80vw"
+        height:"150px"    ,
+       
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -91,32 +92,33 @@ const HomePage = (props) => {
 
     return(
 
-        <div>
+        <React.Fragment>
         <Container className={classes.container}>
-        {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
-
+            {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
             <Grid container item xs={12}>
-                <Paper className={classes.paper}>
-                    <Grid item xs ={3}>
+                <Grid item xs ={6}>
+                    <Paper className={classes.paper}>
                         <h2>Status</h2>
-                    </Grid>
-                <Grid item xs={9}>
-                    
+                    </Paper>
                 </Grid>
-                </Paper>
-            </Grid>
-            <Grid container item xs={12}>
-                <Paper className={classes.paper}>
-                    <Grid item xs ={3}>
-                        <h2> Relationships</h2>
-                    </Grid>
-                <Grid item xs={9}>
-                    
+                <Grid item xs ={6}>
+                    <Paper className={classes.paper}>
+                        <h2> Links</h2>
+                    </Paper>
                 </Grid>
-                </Paper>
+                <Grid item xs ={6}>
+                    <Paper className={classes.paper}>
+                        <h2> Invites</h2>
+                    </Paper>
+                </Grid>
+                <Grid item xs ={6}>
+                    <Paper className={classes.paper}>
+                        <h2> KYC</h2>
+                    </Paper>
+                </Grid>
             </Grid>
         </Container>
-    </div>
+    </React.Fragment>
     
    );
 }
