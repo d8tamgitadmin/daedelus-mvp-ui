@@ -7,6 +7,7 @@ import * as ActionTypes from "../constants/accountConstants";
 
 
 import {
+    getUserAccounts,
     getUserAccountsSuccess,
     getUserAccountsError,
     createAccountSuccess,
@@ -17,6 +18,7 @@ import {
     createAccountLinkError
      } 
      from "../actions/accountActions";
+
 
 function* getUserAccountSaga(action) {        
     try {                
@@ -48,6 +50,7 @@ function* createAccountSaga(action){
             const createUserAccountsResponse = yield call(accountApi.CreateUserAccounts, action.account);
             const responseData = yield call([createUserAccountsResponse, createUserAccountsResponse.json]);
             if(responseData){
+                yield put(getUserAccounts(action.account.id))
                 yield put(createAccountSuccess(responseData))
             } else {
                 yield put(createAccountError("empty payload"))
@@ -95,63 +98,37 @@ function* createAccountLinkSaga(action){
 
         let {currentAccount, targetAccount} = action;
         let request = {
-            walletName: currentAccount.wallets[0].walletId,
+            walletName: currentAccount.wallets[0].walletId+targetAccount.id,
             walletCredentials:"{}",
-            walletkey: currentAccount.wallets[0].walletKey,
+            walletkey: currentAccount.wallets[0].walletKey+targetAccount.id,
         }
 
         // Generate new Wallet DID and Verakey, specify wallet key and credentials
         const createNewDIDResponse = yield call(agentApi.CreateRelationshipRequest,request);
-        const createNewDIDResponseData = yield call([createNewDIDResponse, createNewDIDResponse.json])
-      
-     
-         let newWallet = {
-            "agent":"daedalus-api",
-            "walletId":currentAccount.wallets[0].walletId,
-            "walletKey":currentAccount.wallets[0].walletKey,
-            "did": createNewDIDResponseData.did,
-            "verakey": createNewDIDResponseData.verkey,
-            "created": generateDate(),
-            "modified": generateDate()
-         }
-
-         const createNewWalletForAccountResponse = yield call()
+        const createNewDIDResponseData = yield call([createNewDIDResponse, createNewDIDResponse.json]);
 
         // Construct Invite with new did, verkey, and nonce
+        debugger;
         let invite ={
-   /*
-
-                    invite: 
-                    public long id;
-
-                public Long sourceAccountId;
-
-                public String RequestingDID;
-
-                public String RequestingVerkey;
-
-                public String nonce;
-
-                public Long targetAccountId;
-
-                public String ResponseDID;
-
-                public String ResponseVerkey;
-
-                public InvitationStatus status;
-
-                public Date created;
-
-                public Date modified;
-                */
+            sourceAccountId: currentAccount.id,
+            RequestingDID: createNewDIDResponseData.did,
+            RequestingVerkey: createNewDIDResponseData.verkey,
+            nonce:"",
+            targetAccountId: targetAccount.id,
+            ResponseDID:"",
+            ResponseVerkey:"",
+            status: "Pending",
+            "created": generateDate(),
+            "modified": generateDate()
+        };
+        const createNewInviteResponse = yield call(inviteApi.CreateInvite, invite);
+        const createNewInviteResponseData = yield call([createNewInviteResponse, createNewInviteResponse.json]);
+        debugger;
+        if(createNewInviteResponseData){
+            yield put(createAccountLinkSuccess(createNewInviteResponseData))
+        } else {
+            yield put(createAccountLinkError("Failed"));
         }
-
-
-        
-       
-
-        
-        // Update Current Account with invites (invites:[])
 
     } catch(e){
         yield put(createAccountLinkError(e));

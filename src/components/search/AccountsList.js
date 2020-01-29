@@ -47,6 +47,7 @@ const AccountsList = props => {
     <React.Fragment>
         {isFetching ? <CircularProgress/> :
           accounts && accounts
+          .filter(account => currentAccount != null && account.id !== currentAccount.id)
           .filter(account => account.accountType === "Personal" || showLinked === true)
           .filter(account => filter == null? true: account.name.includes(filter))
           .map((account,i) => (

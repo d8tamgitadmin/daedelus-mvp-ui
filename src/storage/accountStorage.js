@@ -1,4 +1,4 @@
-import ls from 'local-storage'
+import ls from 'local-storage';
 
 
 export const setUserData = userData => ls.set('userData', userData);

@@ -89,7 +89,7 @@ const SearchPage = props => {
     const handleCreateLink = (account, targetAccount)  => {
        console.log(account);
        console.log(targetAccount);
-       alert("here")
+       props.actions.createAccountLink(account, targetAccount);
         
     }
 

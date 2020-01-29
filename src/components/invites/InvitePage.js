@@ -59,7 +59,7 @@ const InvitePage = (props) => {
 
     const classes = useStyles();
 
-    const {currentAccount} = props;
+    const {currentAccount, getTargetInvites} = props;
 
     const [state, setState] = useState({
         authenticated:null,
@@ -75,6 +75,8 @@ const InvitePage = (props) => {
 
     useEffect(() => {
         checkAuthentication();
+        props.actions.getTargetInvites(currentAccount.id);
+        props.actions.getSourceInvites(currentAccount.id);
     },[])
 
     const goToAccountProfile = account => e => {     

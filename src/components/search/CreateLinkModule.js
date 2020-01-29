@@ -49,7 +49,7 @@ const CreateLinkModule = props => {
             onClose={() => setOpen(false)}
             aria-labelledby="form-dialog-title">
                 <form noValidate onSubmit={handleSubmit}>
-                <DialogTitle id="form-dialog-title">Request Account Link</DialogTitle>
+                <DialogTitle id="form-dialog-title">Invite Account</DialogTitle>
                 <DialogContent>
                 <Grid container spacing={4} >
                         <Grid xs={12} item>

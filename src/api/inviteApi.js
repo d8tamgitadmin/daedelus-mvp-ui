@@ -36,7 +36,7 @@ export async function CreateInvite(invite){
 
 export async function GetSourceInvites(sourceAccountId) {
     let token = await oktaAuth.getAccessToken();
-    
+    debugger;
     return fetch(GET_SOURCE_INVITES.route(sourceAccountId), {
         method: GET_SOURCE_INVITES.method,
         withCredentials: true,
