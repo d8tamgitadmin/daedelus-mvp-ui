@@ -37,6 +37,7 @@ const CreateLinkModule = props => {
     const handleSubmit = (e) => {
         e.preventDefault();
         handleCreateLink(currentAccount, targetAccount);
+        setOpen(false);
     }
 
     return (

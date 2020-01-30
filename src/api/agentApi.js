@@ -7,7 +7,7 @@ import oktaAuth from "../okta";
 
 export const POST_CREATE_WALLET = {
     'method': 'POST',
-    'route':  `${API_SERVER}/api/v1/agent/wallet/create`
+    'route':  `${API_SERVER}/api/v1/agent/account/onboard`
 }
 
 export async function CreateUserWallet(wallet){

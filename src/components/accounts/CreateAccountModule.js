@@ -48,6 +48,16 @@ const accountTypes = [
   }
 ];
 
+const poolRoleTypes = [
+ {
+    value:"TRUSTEE",
+    label:"Partner"
+  },{
+    value:"NETWORK_MONITOR",
+    label:"monitor"
+  }
+];
+
 const permissionTypes = [
   {
     value:"Owner",
@@ -200,20 +210,36 @@ const CreateAccountModule = (props)=> {
               </TextField>
            </Grid>
            <Grid xs={12} item>
-           <TextField
-                    id="account-type"
-                    select
-                    fullWidth
-                    label="Account Type"
-                    onChange={handleChange("accountType")}
-                    helperText="Please select Account Type"
-                  >
-                    {accountTypes.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-              </TextField>
+            <TextField
+                      id="account-type"
+                      select
+                      fullWidth
+                      label="Account Type"
+                      onChange={handleChange("accountType")}
+                      helperText="Please select Account Type"
+                    >
+                      {accountTypes.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                </TextField>
+           </Grid>
+           <Grid xs={12} item>
+            <TextField
+                      id="pool-roll-type"
+                      select
+                      fullWidth
+                      label="Pool Roll Type"
+                      onChange={handleChange("poolRollType")}
+                      helperText="Please select Pool Roll Type"
+                    >
+                      {poolRoleTypes.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                </TextField>
            </Grid>
            
          </Grid>

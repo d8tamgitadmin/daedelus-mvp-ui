@@ -4,6 +4,7 @@ import {Paper,Grid, Typography,Button} from '@material-ui/core';
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import KycVerificationBadge from "./KycVerificationBadge";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,22 +46,23 @@ const CurrentAccountSlide = props => {
     {account && 
         <Paper className={classes.paper}>
                 <Grid container item xs={12}>
-                
-                    
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                     <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500" onClick={goToAccountProfile(account)}  />
+                </Grid>
+                <Grid item xs={2}>
+                    <KycVerificationBadge />
                 </Grid>
                 <Grid item xs={3}>
                 <Typography variant="subtitle1">
                             {account.name}
                         </Typography>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                 <Typography variant="subtitle2">
                             {account.accountType}
-                        </Typography>
+                     </Typography>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                 <Typography variant="subtitle2">
                             {account.visibilityType}
                         </Typography>

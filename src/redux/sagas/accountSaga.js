@@ -113,7 +113,7 @@ function* createAccountLinkSaga(action){
             sourceAccountId: currentAccount.id,
             RequestingDID: createNewDIDResponseData.did,
             RequestingVerkey: createNewDIDResponseData.verkey,
-            nonce:"",
+            nonce:createNewDIDResponseData.nonce,
             targetAccountId: targetAccount.id,
             ResponseDID:"",
             ResponseVerkey:"",

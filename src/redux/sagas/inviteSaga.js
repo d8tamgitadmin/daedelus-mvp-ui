@@ -31,7 +31,7 @@ function* getSourceInvitesSaga(action){
 
 function* getTargetInvitesSaga(action){
     try {
-        const targetInvitesResponse = yield call(inviteApi.GetSourceInvites, action.targetAccountId);
+        const targetInvitesResponse = yield call(inviteApi.GetTargetInvites, action.targetAccountId);
         const responseData = yield call([targetInvitesResponse, targetInvitesResponse.json]);
         if(responseData){
             yield put(getTargetInvitesSuccess(responseData));

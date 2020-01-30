@@ -111,7 +111,7 @@ const AccountsPage = (props) => {
                 <Grid container spacing={4}>
                     {userAccounts && userAccounts.map(userAccount => (
                         <Grid item key={userAccount} xs={12} sm={6} md={4}>
-                            <Card className={classes.card}  >
+                            <Card className={classes.card} onClick={goToDetail(userAccount)}  >
                                 <CardMedia
                                     className={classes.CardMedia}
                                     image="https://source.unsplash.com/random"
@@ -129,11 +129,7 @@ const AccountsPage = (props) => {
                                         <Typography variant="subtitle1">
                                             {userAccount.created.split('T')[0]}
                                         </Typography>
-                                        <CardActions>
-                                            <Button variant="contained" color="secondary" onClick={goToDetail(userAccount)}>
-                                            Set As Current</Button>
-                                        </CardActions>
-                                        
+                                       
                                     </CardContent>
                             </Card>
                         </Grid>

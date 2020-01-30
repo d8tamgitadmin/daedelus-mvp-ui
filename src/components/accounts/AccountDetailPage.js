@@ -62,6 +62,13 @@ const AccountDetailPage = (props) => {
     const {account} = props;
     console.log(account)
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    const goToDetail = account => e => {       
+        // this also sets it as the current account
+        props.actions.getAccountDetail(account);
+       
+    }
+    
     
     return (
         <React.Fragment>
@@ -79,6 +86,11 @@ const AccountDetailPage = (props) => {
                         <Typography gutterBottom variant="subtitle1">
                         {account.created.split('T')[0]}
                         </Typography>
+                        <Typography gutterBottom variant="subtitle1">
+                        <Button variant="contained" color="secondary" onClick={goToDetail(account)}>
+                                            Set As Current</Button>
+                        </Typography>
+                       
                 </Paper>
             </Grid>
             <Grid item xs={12} md={8} lg={9}>
