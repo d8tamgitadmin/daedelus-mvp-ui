@@ -19,9 +19,8 @@ import * as accountActions from "../../redux/actions/accountActions";
 import * as accountSelectors from "../../redux/selectors/accountSelector";
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import { CircularProgress, Container, Typography, Button, Paper, Grid } from '@material-ui/core';
+
 
 import CurrentAccountSlide from "../common/CurrentAccountSlide";
 
@@ -34,7 +33,12 @@ const useStyles = makeStyles(theme => ({
        fontSize:"12px"  , 
     
     },
-
+    paperHeader: {
+        width:"80vw",
+        background:'white',
+        margin:theme.spacing(3, 0, 2),
+        padding: theme.spacing(2)
+    },
     paper:{
         margin:theme.spacing(3, 0, 2),
         background:'white',
@@ -72,46 +76,45 @@ const CredentialsPage = (props) => {
         checkAuthentication();
     })
 
-    const goToAccountProfile = account => e => {     
-        e.preventDefault();  
-        props.actions.getAccountDetail(account);
-        props.nav.push(`/accounts/detail/${account.id}`)    
-    }
+
 
     return(
 
         <React.Fragment>
         <Container className={classes.container}>
-        {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
+            <Grid container item xs={12}>
+                <Paper className={classes.paperHeader}>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Typography variant="h6" component="h5">
+                                Onboarding
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
 
-            <Grid container item xs={12}>
-                <Paper className={classes.paper}>
-                    <Grid item xs ={5}>
-                        <h2>In Progress Schemas</h2>
+                        </Grid>
+                        <Grid item xs={3}>
+                        <Button variant="contained" color="primary" >
+                            KYC Account
+                        </Button>
+                        </Grid>
                     </Grid>
-                <Grid item xs={7}>
                     
-                </Grid>
                 </Paper>
             </Grid>
             <Grid container item xs={12}>
                 <Paper className={classes.paper}>
-                    <Grid item xs ={3}>
-                        <h2>Confirmed</h2>
+                <Grid container item xs={12}>
+                <Grid item xs={4}>
+                        <Typography variant="subtitle1" component="h4">
+                            Accounts In Progress
+                        </Typography>
                     </Grid>
-                <Grid item xs={9}>
-                    
-                </Grid>
-                </Paper>
-            </Grid>
-            <Grid container item xs={12}>
-                <Paper className={classes.paper}>
-                    <Grid item xs ={3}>
-                        <h2>Expired</h2>
+                    <Grid item xs={8}>
+                        
                     </Grid>
-                <Grid item xs={9}>
-                    
                 </Grid>
+                  
                 </Paper>
             </Grid>
         </Container>

@@ -16,11 +16,7 @@ import * as poolActions from "../../redux/actions/poolActions";
 import * as poolSelector from "../../redux/selectors/poolSelector";
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import { CircularProgress, Typography, Button, Paper, Container, Grid } from '@material-ui/core';
 
 
 const useStyles = makeStyles(theme => ({
@@ -33,11 +29,17 @@ const useStyles = makeStyles(theme => ({
        fontSize:"12px", 
        
     },
+    paperHeader: {
+        width:"80vw",
+        background:'white',
+        margin:theme.spacing(3, 0, 2),
+        padding: theme.spacing(2)
+    },
     paper:{     
         margin: theme.spacing(3, 0, 2),
         background:'white',       
-        height:"50vh",
-        width:"90vw"
+        height:"100%",
+        width:"100%"
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -61,6 +63,22 @@ const LedgerPage = (props)=> {
     }
     return (
     <Container fixed={true} maxWidth="md" className={classes.root}>
+    
+        <Grid container item xs={12}>
+                <Paper className={classes.paperHeader}>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Typography variant="h6" component="h5">
+                                Settings
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={9}>
+
+                        </Grid>
+                    </Grid>
+                    
+                </Paper>
+            </Grid>
     <Grid item container xs={12}>
             <Paper className={classes.paper}>
             {isworking == true ? <CircularProgress/> :

@@ -103,8 +103,6 @@ const SearchPage = props => {
         <React.Fragment>
         <CssBaseline/>
             <Container className={classes.container}>
-            {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
-
             <Paper className={classes.paper}>
                 <Grid container item xs={12}>
                     

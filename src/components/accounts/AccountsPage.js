@@ -81,6 +81,13 @@ const AccountsPage = (props) => {
         setState({...state,route:true})
     }
     
+    const handleRefresh = e => {
+        e.preventDefault();
+        if(currentUser != null){
+            props.actions.getUserAccounts(currentUser.id);
+        }
+       
+    }
 
     useEffect(() => {
         props.actions.getUserAccounts(currentUser.id);
@@ -89,7 +96,6 @@ const AccountsPage = (props) => {
     return(
         <React.Fragment>
             <CssBaseline/>
-            {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToDetail}  />}
             <div className={classes.heroContent}>
                 <Grid container maxWidth="sm">
                     <Grid xs={8} item>
@@ -97,15 +103,16 @@ const AccountsPage = (props) => {
                          {currentUser.firstName}' Accounts
                         </Typography>
                     </Grid>
-                    <Grid xs={4} item>
+                    <Grid xs={2} item>
                     <CreateAccountModule currentUser={currentUser} account={account} onSubmit={onSubmit}/>
+                    </Grid>
+                    <Grid xs={2} item>
+                    <Button variant="outlined" color="secondary" onClick={handleRefresh} >Refresh</Button>
                     </Grid>
                 </Grid>
             </div>
             {isFetchingUserAccounts == true ?  
-                <Paper className={classes.paper}>                
-               <CircularProgress/>
-            </Paper> 
+                <CircularProgress/>
             :
             <Container className={classes.cardGrid} maxWidth="md">
                 <Grid container spacing={4}>

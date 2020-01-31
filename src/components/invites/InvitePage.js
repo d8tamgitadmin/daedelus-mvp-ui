@@ -12,7 +12,7 @@ import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container, Typography, CssBaseline } from '@material-ui/core';
+import { CircularProgress, Container, Typography, CssBaseline, Button } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
@@ -27,6 +27,7 @@ import * as inviteSelectors from "../../redux/selectors/invitationSelector";
 import * as inviteActions from "../../redux/actions/invitationActions";
 
 import CurrentAccountSlide from "../common/CurrentAccountSlide";
+import InvitesTable from './InvitesTable';
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,12 +39,19 @@ const useStyles = makeStyles(theme => ({
        fontSize:"12px"  , 
     
     },
+    paperHeader: {
+        width:"80vw",
+        background:'white',
+        margin:theme.spacing(3, 0, 2),
+        padding: theme.spacing(2)
+    },
 
     paper:{
         margin:theme.spacing(3, 0, 2),
         background:'white',
-        height:"30vh"    ,
-        width:"80vw"
+        height:"100%"    ,
+        width:"100%",
+        overflow:"scroll"
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -59,7 +67,7 @@ const InvitePage = (props) => {
 
     const classes = useStyles();
 
-    const {currentAccount, getTargetInvites} = props;
+    const {currentAccount, getTargetInvites,sourceInvites,targetInvites, isFetchingTargetInvites, isFetchingSourceInvites} = props;
 
     const [state, setState] = useState({
         authenticated:null,
@@ -77,12 +85,15 @@ const InvitePage = (props) => {
         checkAuthentication();
         props.actions.getTargetInvites(currentAccount.id);
         props.actions.getSourceInvites(currentAccount.id);
-    },[])
+    },[]);
 
-    const goToAccountProfile = account => e => {     
-        e.preventDefault();  
-        props.actions.getAccountDetail(account);
-        props.nav.push(`/accounts/detail/${account.id}`)    
+    const handleRefresh = (e) => {
+        e.preventDefault();
+        if(currentAccount != null) {
+            props.actions.getTargetInvites(currentAccount.id);
+            props.actions.getSourceInvites(currentAccount.id);
+        }
+       
     }
 
     return(
@@ -92,41 +103,33 @@ const InvitePage = (props) => {
         
         <Container className={classes.container}>
         <Grid container item xs={12}>
-        {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
+                <Paper className={classes.paperHeader}>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Typography variant="h6" component="h5">
+                                Inbox
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
 
-        </Grid>
-        <Paper className={classes.paper}>
-            <Grid container item xs={12}>
-                    <Grid item xs ={3}>
-                        <Typography variant="subtitle1" component="p">
-                            Pending
-                        </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button onClick={handleRefresh} variant="contained" color="primary">Refresh</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={9}>
-                        
-                    </Grid>
-                    <Grid item xs={12}>
-
-                    </Grid>
-                </Grid>
-            </Paper>
-            <Grid container item xs={12}>
-            <Paper className={classes.paper}>
-            <Grid container item xs={12}>
-                    <Grid item xs ={3}>
-                        <Typography variant="subtitle1" component="p">
-                            Requesting
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={9}>
-                        
-                    </Grid>
-                    <Grid item xs={12}>
-
-                    </Grid>
-                </Grid>
-            </Paper>
+                    
+                </Paper>
             </Grid>
+        <Grid container item xs={12}>
+        
+            <Paper className={classes.paper}>
+            {isFetchingSourceInvites == true || isFetchingTargetInvites == true ?
+                         <CircularProgress/> :
+                            <InvitesTable  sourceInvites={sourceInvites} targetInvites={targetInvites}/>}
+                </Paper>
+        </Grid>
+       
+        
         </Container>
     </React.Fragment>
     

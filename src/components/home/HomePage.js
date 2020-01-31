@@ -79,12 +79,6 @@ const HomePage = (props) => {
         }
     }
 
-    const goToAccountProfile = account => e => {     
-        e.preventDefault();  
-        props.actions.getAccountDetail(account);
-        props.nav.push(`/accounts/detail/${account.id}`)    
-    }
-
 
     useEffect(() => {
         checkAuthentication();       
@@ -94,7 +88,6 @@ const HomePage = (props) => {
 
         <React.Fragment>
         <Container className={classes.container}>
-            {currentAccount && <CurrentAccountSlide account={currentAccount} goToAccountProfile={goToAccountProfile}  />}
             <Grid container item xs={12}>
                 <Grid item xs ={6}>
                     <Paper className={classes.paper}>

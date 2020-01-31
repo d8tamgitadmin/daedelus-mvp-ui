@@ -11,8 +11,10 @@ import { createStructuredSelector } from 'reselect';
 import { withAuth } from '@okta/okta-react';
 
 import * as authActions from "../../redux/actions/authActions";
-
 import * as authSelectors from "../../redux/selectors/authSelector";
+
+import * as accountActions from "../../redux/actions/accountActions";
+import * as accountSelectors from "../../redux/selectors/accountSelector";
 
 import MainNavList from "./MainNavList";
 import MainNavProfile from "./MainiNavProfile";
@@ -32,18 +34,21 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, Grid } from '@material-ui/core';
 import Container from "@material-ui/core/Container";
 
+import SearchAppBar from "../search/SearchAppBar";
+import CurrentAccountAppBar from "../common/CurrentAccountAppBar";
 
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    flexGrow: 1,
   },
   appBar: {
+    flexGrow:1,
     background:"black",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -62,6 +67,10 @@ const useStyles = makeStyles(theme => ({
   appBarSpacer: theme.mixins.toolbar,
   menuButton: {
     marginRight: 36,
+  },
+  title:{
+  
+  
   },
   hide: {
     display: 'none',
@@ -90,9 +99,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   },
@@ -102,8 +108,8 @@ const useStyles = makeStyles(theme => ({
     overflow:'auto',
     padding: theme.spacing(2),
   },
-  title:{
-    flexGrow:1,
+  searchBar:{
+  
   }
 }))
 
@@ -116,6 +122,8 @@ const MenuAppBar = (props) => {
     const [anchorProfileEl, setProfileAnchorEl] = useState(null);
     const [showAccountMenu, setAccountMenu] = useState(false);
     const [authenticated, setAuthentication] = useState(false);
+
+    const {currentAccount} = props;
 
     const handleMenuOpen = (e) => {
       setOpen(true)
@@ -159,6 +167,12 @@ const MenuAppBar = (props) => {
       props.nav.push(`/profile`)
     }
   
+    const goToAccountProfile = account => e => {     
+      e.preventDefault();  
+      props.actions.getAccountDetail(account);
+      props.nav.push(`/accounts/detail/${account.id}`)    
+  }
+
     return (
       <div className={classes.root}>
       <CssBaseline />
@@ -166,7 +180,7 @@ const MenuAppBar = (props) => {
         color="primary"
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
+        <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -178,12 +192,26 @@ const MenuAppBar = (props) => {
           >
           <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
-            Daedalus POC
-          </Typography>
-          <IconButton edge="start" onClick={handleAccountOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
-              <AccountCircle className={classes.accountCirleIcon} />
-              </IconButton>
+          <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={2}>
+                  <Typography variant="h6">
+                    Daedalus POC
+                  </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <SearchAppBar className={classes.searchBar} />          
+              </Grid>
+              <Grid item xs={3}>
+              </Grid>
+              <Grid item xs={3}>
+              {currentAccount != null && <CurrentAccountAppBar account={currentAccount} goToAccountProfile={goToAccountProfile}/>}
+             
+              </Grid>
+        
+              <Grid item={2}>
+              <IconButton edge="start" onClick={handleAccountOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
+              <AccountCircle fontSize="large" className={classes.accountCirleIcon} />
+            </IconButton>
               <Menu keepMounted anchorEl={anchorProfileEl} open={Boolean(anchorProfileEl)} onClose={handleAccountClose}>
                     <MenuItem>
                      <Button onClick={handleAccount} color="inherit" className={classes.menuButton}>Profile </Button>
@@ -191,7 +219,10 @@ const MenuAppBar = (props) => {
                   <MenuItem>
                   <Button className={classes.appbarMenu} onClick={handleLogout}>Logout</Button> 
             </MenuItem>
-              </Menu>
+            </Menu>
+              </Grid>
+
+          </Grid>
         </Toolbar>      
         </AppBar>
         <Drawer
@@ -223,7 +254,6 @@ const MenuAppBar = (props) => {
         <Container minWidth="lg">
           {props.children}
         </Container>
-        
       </main>
       </div>
     );
@@ -234,17 +264,19 @@ const MenuAppBar = (props) => {
     match:PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,
-    children: PropTypes.node
+    children: PropTypes.node,
+    currentAccount: PropTypes.object
   }
 
 const mapStateToProps = createStructuredSelector({
-    
+  currentAccount: accountSelectors.makeSelectAccount()
 });
 
 const mapDispatchToProps =  (dispatch) => {
 return {
   actions: {
-    ...bindActionCreators(authActions, dispatch)
+    ...bindActionCreators(authActions, dispatch),
+    ...bindActionCreators(accountActions, dispatch)
   },
   nav: {
     push: function() {

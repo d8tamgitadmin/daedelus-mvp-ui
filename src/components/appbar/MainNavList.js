@@ -25,35 +25,38 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import SearchIcon from '@material-ui/icons/Search';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import Badge from '@material-ui/core/Badge';
+import PeopleIcon from '@material-ui/icons/People';
 
 const MenuNavList = (props) => {
     return (
         <React.Fragment>
         <List>
-            <ListItem button component={NavLink} to="/home">
-                <ListItemIcon><HomeIcon/></ListItemIcon>
-                <ListItemText primary="Home" />
-          </ListItem>
-          <ListItem button component={NavLink} to="/search">
-                <ListItemIcon><SearchIcon/></ListItemIcon>
-                <ListItemText primary="Search" />
+        <ListItem button component={NavLink} to="/invites">
+                <ListItemIcon> 
+                        <Badge badgeContent={4} color="secondary">
+                              <MailIcon />
+                         </Badge>
+                  </ListItemIcon>
+                <ListItemText primary="Inbox" />
           </ListItem>
           <ListItem button component={NavLink} to="/accounts">
                 <ListItemIcon><AccountBoxIcon/></ListItemIcon>
                 <ListItemText primary="Accounts" />
           </ListItem>
-          <ListItem button component={NavLink} to="/invites">
-                <ListItemIcon><MailIcon/></ListItemIcon>
-                <ListItemText primary="Invites" />
-          </ListItem>
           <ListItem button component={NavLink} to="/credentials">
                 <ListItemIcon><AccountBalanceIcon/></ListItemIcon>
                 <ListItemText primary="KYC" />
           </ListItem>
+          <ListItem button component={NavLink} to="/search">
+                <ListItemIcon><PeopleIcon/></ListItemIcon>
+                <ListItemText primary="Members" />
+          </ListItem>
+         
           <ListItem button component={NavLink} to="/Ledger">
-                <ListItemIcon><HelpOutlineIcon/></ListItemIcon>
-                <ListItemText primary="Help" />
+                <ListItemIcon><SettingsApplicationsIcon/></ListItemIcon>
+                <ListItemText primary="Settings" />
           </ListItem>
         </List>
       </React.Fragment>)
