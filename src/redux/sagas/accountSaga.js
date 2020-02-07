@@ -15,7 +15,9 @@ import {
     getPublicAccountsSuccess,
     getPublicAccountsError,
     createAccountLinkSuccess,
-    createAccountLinkError
+    createAccountLinkError,
+    deleteAccountError,
+    deleteAccountSuccess
      } 
      from "../actions/accountActions";
 
@@ -58,6 +60,21 @@ function* createAccountSaga(action){
         }
     } catch(e){
         yield put(createAccountError(e))
+    }
+}
+
+function* deleteAccountSaga(action){
+    try {
+        const deleteAccountResponse = yield call(accountApi.DeleteAccount, action.id);
+        if(deleteAccountResponse){
+            yield put(deleteAccountSuccess());
+            yield put(getUserAccounts(action.currentUserId))
+        } else {
+            yield put(deleteAccountError("no account found"));
+        }
+
+    } catch(e){
+        yield put(deleteAccountError(e));
     }
 }
 
@@ -140,6 +157,7 @@ function* accountRootSaga() {
     yield takeLatest(ActionTypes.CREATE_ACCOUNT, createAccountSaga);
     yield takeLatest(ActionTypes.GET_PUBLIC_ACCOUNTS, getPublicAccountsSaga);
     yield takeLatest(ActionTypes.CREATE_ACCOUNT_LINK, createAccountLinkSaga);
+    yield takeLatest(ActionTypes.DELETE_ACCOUNT, deleteAccountSaga);
 }
 
 export default accountRootSaga;

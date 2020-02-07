@@ -54,11 +54,11 @@ const CurrentAccountAppBar = (props) => {
                     <Grid item xs={2}>
                         <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500" onClick={goToAccountProfile(account)}  />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={2}>
                         {account.name}
                     </Grid>
-                    <Grid item xs={4}>
-                        {account.accountType}
+                    <Grid item xs={6}>
+                    DID: {account.wallets != null && account.wallets.length > 0 &&  account.wallets[0].did}
                     </Grid>
                     <Grid item xs={2}>
                         <KycVerificationBadge />

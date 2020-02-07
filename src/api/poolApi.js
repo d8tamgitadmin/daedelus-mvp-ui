@@ -8,7 +8,7 @@ import oktaAuth from "../okta";
 
 export const GET_SEED_POOL = {
     'method': 'GET',
-    'route': `${API_SERVER}/api/v1/ledger/seed`
+    'route': `${API_SERVER}/api/v1/agent/seed`
   };
 
 export async function GetPoolSeed() {

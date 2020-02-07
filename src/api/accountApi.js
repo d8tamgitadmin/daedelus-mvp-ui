@@ -10,6 +10,11 @@ export const GET_USER_ACCOUNTS = {
     'route':(userId) =>  `${API_SERVER}/api/v1/account/user/${userId}`
   };
 
+  export const DELETE_ACCOUNT = {
+    'method': 'DELETE',
+    'route':(id) =>  `${API_SERVER}/api/v1/account/${id}`
+  };
+
 export const GET_PUBLIC_ACCOUNTS = {
     'method': 'GET',
     'route': `${API_SERVER}/api/v1/account/`
@@ -57,5 +62,17 @@ export async function GetPublicAccounts(){
         credentials: 'include',
         headers: AUTH_HEADERS(token)
       })
+}
+
+export async function DeleteAccount(id){
+    let token = await oktaAuth.getAccessToken();
+
+    return fetch(DELETE_ACCOUNT.route(id), {
+        method: DELETE_ACCOUNT.method,
+        withCredentials: true,
+        mode: 'cors',
+        credentials: 'include',
+        headers: AUTH_HEADERS(token)
+    });
 }
 

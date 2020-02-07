@@ -19,7 +19,7 @@ import * as accountActions from "../../redux/actions/accountActions";
 import * as accountSelectors from "../../redux/selectors/accountSelector";
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container, Typography, Button, Paper, Grid } from '@material-ui/core';
+import { CircularProgress, Container, Typography, Button, Paper, Grid, Tabs, Tab, TabPanel } from '@material-ui/core';
 
 
 import CurrentAccountSlide from "../common/CurrentAccountSlide";
@@ -60,6 +60,8 @@ const CredentialsPage = (props) => {
     const {currentAccount} = props;
     const classes = useStyles();
 
+    const [tabValue, setTabValue] = React.useState(0);
+
     const [state, setState] = useState({
         authenticated:null,
         
@@ -74,14 +76,30 @@ const CredentialsPage = (props) => {
 
     useEffect(() => {
         checkAuthentication();
-    })
+    });
+
+    const handleChange = (event, newValue) => {
+        setTabValue(newValue);
+      };
 
 
 
     return(
 
         <React.Fragment>
-        <Container className={classes.container}>
+         <Tabs
+        value={tabValue}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+      >
+        <Tab label="Schema" />
+        <Tab label="Definition" />
+        <Tab label="Offers" />
+      </Tabs>
+      {tabValue == 0 && 
+      <Container className={classes.container}>
             <Grid container item xs={12}>
                 <Paper className={classes.paperHeader}>
                     <Grid container>
@@ -118,7 +136,11 @@ const CredentialsPage = (props) => {
                 </Paper>
             </Grid>
         </Container>
+      }
+
+      
     </React.Fragment>
+       
     
    );
 }

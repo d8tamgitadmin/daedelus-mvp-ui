@@ -28,6 +28,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import Badge from '@material-ui/core/Badge';
 import PeopleIcon from '@material-ui/icons/People';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BusinessIcon from '@material-ui/icons/Business';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 
 const MenuNavList = (props) => {
     return (
@@ -42,16 +45,20 @@ const MenuNavList = (props) => {
                 <ListItemText primary="Inbox" />
           </ListItem>
           <ListItem button component={NavLink} to="/accounts">
-                <ListItemIcon><AccountBoxIcon/></ListItemIcon>
+                <ListItemIcon><BusinessIcon/></ListItemIcon>
                 <ListItemText primary="Accounts" />
           </ListItem>
-          <ListItem button component={NavLink} to="/credentials">
-                <ListItemIcon><AccountBalanceIcon/></ListItemIcon>
-                <ListItemText primary="KYC" />
-          </ListItem>
           <ListItem button component={NavLink} to="/search">
-                <ListItemIcon><PeopleIcon/></ListItemIcon>
+                <ListItemIcon><HomeWorkIcon/></ListItemIcon>
                 <ListItemText primary="Members" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/users">
+                <ListItemIcon><PeopleIcon/></ListItemIcon>
+                <ListItemText primary="Users" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/credentials">
+                <ListItemIcon><BookmarkIcon/></ListItemIcon>
+                <ListItemText primary="Credentials" />
           </ListItem>
          
           <ListItem button component={NavLink} to="/Ledger">

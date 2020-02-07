@@ -29,6 +29,7 @@ import InvitePage from './components/invites/InvitePage';
 import CredentialsPage from './components/creds/CredentialsPage';
 import AccountDetailPage from './components/accounts/AccountDetailPage';
 import SearchPage from './components/search/SearchPage';
+import UserPage from "./components/users/UserPage";
 
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
                     <SecureRoute path="/about" exact={true} component={About}/>
                     <SecureRoute path="/profile" exact={true} component={ProfilePage}/>
                     <SecureRoute path="/search" exact={true} component={SearchPage}/>
+                    <SecureRoute path="/users" exact={true} component={UserPage}/>
                     <Route path='/implicit/callback' component={ImplicitCallback}/>
                   </MenuAppBar>  
                   <SecureRoute component={NotFoundPage}/>         

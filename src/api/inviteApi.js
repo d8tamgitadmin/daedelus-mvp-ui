@@ -15,6 +15,11 @@ export const GET_SOURCE_INVITES = {
     route: (sourceTargetId) => `${API_SERVER}/api/v1/invite/source/${sourceTargetId}`
 }
 
+export const GET_INVITES_COUNT = {
+    'method': 'GET',
+    route: (id) => `${API_SERVER}/api/v1/invite/count/${id}`
+}
+
 export const GET_TARGET_INVITES = {
     'method': 'GET',
     route: (targetAccountId) => `${API_SERVER}/api/v1/invite/target/${targetAccountId}`
@@ -51,6 +56,18 @@ export async function GetTargetInvites(targetAccountId) {
     
     return fetch(GET_TARGET_INVITES.route(targetAccountId), {
         method: GET_TARGET_INVITES.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token)
+    });
+}
+
+export async function GetInvitesCount(id) {
+    let token = await oktaAuth.getAccessToken();
+
+    return fetch(GET_INVITES_COUNT.route(id), {
+        method: GET_INVITES_COUNT.method,
         withCredentials: true,
         mode:'cors',
         credentials:'include',

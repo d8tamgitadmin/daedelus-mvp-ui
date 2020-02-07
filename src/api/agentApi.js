@@ -25,7 +25,7 @@ export async function CreateUserWallet(wallet){
 
 export const POST_RELATIONSHIP_REQUEST = {
     'method': 'POST',
-    'route':  `${API_SERVER}/api/v1/agent/relationship/request`
+    'route':  `${API_SERVER}/api/v1/agent/invitations/request`
 }
 
 export async function CreateRelationshipRequest(request) {

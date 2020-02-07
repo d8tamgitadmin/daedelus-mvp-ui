@@ -99,3 +99,24 @@ export function createAccountLinkError(error){
         error: error
     }
 }
+
+export function deleteAccount(id, currentUserId){
+    return {
+        type:constants.DELETE_ACCOUNT,  
+        id: id,
+        currentUserId: currentUserId
+    }
+}
+
+export function deleteAccountSuccess(){
+    return {
+        type: constants.DELETE_ACCOUNT_SUCCESS
+    }
+}
+
+export function deleteAccountError(error){
+    return {
+        type: constants.DELETE_ACCOUNT_ERROR,
+        error:error
+    }
+}

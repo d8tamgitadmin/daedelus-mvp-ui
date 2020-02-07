@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { withAuth } from '@okta/okta-react';
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { Container,Paper, Grid, Typography, CssBaseline } from '@material-ui/core';
+import { Container,Paper, Grid, Typography, CssBaseline ,Button} from '@material-ui/core';
 
 
 import * as authActions from "../../redux/actions/authActions";
@@ -34,7 +34,10 @@ const useStyles = makeStyles(theme => ({
        fontSize:"12px"  , 
     
     },
-
+    heroContent:{
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing(4),
+    },
     paper:{
         margin:theme.spacing(3, 0),
         padding:theme.spacing(2),
@@ -98,10 +101,29 @@ const SearchPage = props => {
         props.actions.getPublicAccounts();
     },[]);
 
+    const handleRefresh = e => {
+        e.preventDefault();
+
+    }
+
 
     return (
         <React.Fragment>
         <CssBaseline/>
+            <div className={classes.heroContent}>
+                <Grid container maxWidth="sm">
+                    <Grid xs={8} item>
+                        <Typography variant="subtitle1" align="left" color="textPrimary" gutterBottom>
+                        Linked Free Zone Members
+                        </Typography>
+                    </Grid>
+                    <Grid xs={2} item>
+                    </Grid>
+                    <Grid xs={2} item>
+                    <Button variant="outlined" color="secondary" onClick={handleRefresh} >Refresh</Button>
+                    </Grid>
+                </Grid>
+            </div>
             <Container className={classes.container}>
             <Paper className={classes.paper}>
                 <Grid container item xs={12}>

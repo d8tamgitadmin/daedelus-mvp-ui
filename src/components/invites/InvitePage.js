@@ -83,8 +83,11 @@ const InvitePage = (props) => {
 
     useEffect(() => {
         checkAuthentication();
-        props.actions.getTargetInvites(currentAccount.id);
-        props.actions.getSourceInvites(currentAccount.id);
+        if(currentAccount != null){
+            props.actions.getTargetInvites(currentAccount.id);
+            props.actions.getSourceInvites(currentAccount.id);
+        }
+       
     },[]);
 
     const handleRefresh = (e) => {

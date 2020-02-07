@@ -57,16 +57,10 @@ const CurrentAccountSlide = props => {
                             {account.name}
                         </Typography>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={4}>
                 <Typography variant="subtitle2">
-                            {account.accountType}
+                            {account.wallets[0].did}
                      </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="subtitle2">
-                            {account.visibilityType}
-                        </Typography>
-             
                 </Grid>
                   
                 </Grid>

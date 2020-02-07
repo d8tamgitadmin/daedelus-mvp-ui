@@ -10,6 +10,7 @@ import { compose, bindActionCreators } from 'redux';
 import { withAuth } from '@okta/okta-react';
 
 import Button from '@material-ui/core/Button';
+import clsx from 'clsx';
 import { withStyles,makeStyles } from '@material-ui/core/styles';
 import { CircularProgress, Container, Typography, Divider } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +18,9 @@ import Grid from '@material-ui/core/Grid';
 
 import * as selectors from "../../redux/selectors/accountSelector";
 import * as accountActions from "../../redux/actions/accountActions";
-import clsx from 'clsx';
+
+import * as authActions from "../../redux/actions/authActions";
+import * as authSelectors from "../../redux/selectors/authSelector";
 
 import AccountAddresses from "./AccountAddresses";
 import AccountMembers from "./AccountMembers";
@@ -59,14 +62,19 @@ const useStyles = makeStyles(theme => ({
 
 const AccountDetailPage = (props) => {
     const classes = useStyles();
-    const {account} = props;
+    const {account, currentUser} = props;
     console.log(account)
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     const goToDetail = account => e => {       
         // this also sets it as the current account
-        props.actions.getAccountDetail(account);
-       
+        props.actions.getAccountDetail(account.id,currentUser.id);
+    }
+
+    const handleAccountDelete = account => e =>{
+        e.preventDefault();
+        props.actions.deleteAccount(account.id, currentUser.id);
+        props.nav.push(`/accounts`)    
     }
     
     
@@ -87,8 +95,12 @@ const AccountDetailPage = (props) => {
                         {account.created.split('T')[0]}
                         </Typography>
                         <Typography gutterBottom variant="subtitle1">
-                        <Button variant="contained" color="secondary" onClick={goToDetail(account)}>
+                        <Button variant="contained" color="primary" onClick={goToDetail(account)}>
                                             Set As Current</Button>
+                        </Typography>
+                        <Typography gutterBottom variant="subtitle1">
+                        <Button variant="outlined" color="secondary" onClick={handleAccountDelete(account)}>
+                                            Delete Account</Button>
                         </Typography>
                        
                 </Paper>
@@ -128,12 +140,14 @@ AccountDetailPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
     account: selectors.makeSelectAccount(),
+    currentUser: authSelectors.makeSelectCurrentUser()
  });
  
  const mapDispatchToProps =  (dispatch) => {
  return {
    actions: {
-     ...bindActionCreators(accountActions, dispatch)
+     ...bindActionCreators(accountActions, dispatch),
+     ...bindActionCreators(authActions, dispatch),
    },
    nav: {
      push: function() {

@@ -6,12 +6,12 @@ import * as accountStorage from "../../storage/accountStorage";
 export default function invitationReducer(state=initialState.accountData, action){
     switch(action.type){
         case constants.GET_USER_ACCOUNTS:            
-            return {...state, userAccounts:null, isFetchingUserAccounts:true}        
+            return {...state, userAccounts:[], isFetchingUserAccounts:true}        
         case constants.GET_USER_ACCOUNTS_SUCCESS:
             return {...state, userAccounts:action.userAccounts, isFetchingUserAccounts:false}        
         case constants.GET_USER_ACCOUNTS_ERROR:
         
-            return {...state, userAccounts:null, isFetchingUserAccounts:false, error:action.error}  
+            return {...state, userAccounts:[], isFetchingUserAccounts:false, error:action.error}  
         
         case constants.SET_CURRENT_ACCOUNT:
         case constants.GET_ACCOUNT_DETAIL:
@@ -41,6 +41,14 @@ export default function invitationReducer(state=initialState.accountData, action
             return {...state};
         case constants.CREATE_ACCOUNT_ERROR:
             return {...state};
+
+        case constants.DELETE_ACCOUNT:
+            return {...state}
+        case constants.DELETE_ACCOUNT_SUCCESS:
+            accountStorage.setAccount(null);
+            return {...state, account: null}
+        case constants.DELETE_ACCOUNT_ERROR:
+            return {...state}
 
         default:
             return state;

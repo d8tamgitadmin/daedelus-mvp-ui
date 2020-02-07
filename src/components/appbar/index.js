@@ -201,17 +201,15 @@ const MenuAppBar = (props) => {
               <Grid item xs={3}>
                 <SearchAppBar className={classes.searchBar} />          
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
               </Grid>
-              <Grid item xs={3}>
-              {currentAccount != null && <CurrentAccountAppBar account={currentAccount} goToAccountProfile={goToAccountProfile}/>}
-             
+              <Grid item xs={4}>
+              {currentAccount != null && <CurrentAccountAppBar account={currentAccount} goToAccountProfile={goToAccountProfile}/>}             
               </Grid>
-        
               <Grid item={2}>
-              <IconButton edge="start" onClick={handleAccountOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
-              <AccountCircle fontSize="large" className={classes.accountCirleIcon} />
-            </IconButton>
+                <IconButton edge="start" onClick={handleAccountOpen}  className={classes.menuIcon} color="inherit" aria-label="menu">
+                  <AccountCircle fontSize="large" className={classes.accountCirleIcon} />
+                </IconButton>
               <Menu keepMounted anchorEl={anchorProfileEl} open={Boolean(anchorProfileEl)} onClose={handleAccountClose}>
                     <MenuItem>
                      <Button onClick={handleAccount} color="inherit" className={classes.menuButton}>Profile </Button>
