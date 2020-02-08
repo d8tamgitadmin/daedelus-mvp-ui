@@ -34,3 +34,32 @@ export const makeSelectGetKycSchemasErrorMessage = () => createSelector(
     (substate) => substate.schemasErrorMessage
 );
 
+export const makeSelectSchemaDefinition = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.schemaDefinition
+);
+
+export const makeSelectIsCreatingSchemaDefinition = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.isCreatingSchemaDefinition
+);
+
+export const makeSelectSchemaDefinitionErrorMessage = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.schemaDefinitionErrorMessage
+);
+
+export const makeSelectSchemaDefinitions = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.schemaDefinitions
+);
+
+export const makeSelectIsFetchingSchemaDefinitions = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.isFetchingSchemaDefinitions
+);
+
+export const makeSelectSchemaDefinitionsErrorMessage = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.schemaDefinitionsErrorMessage
+);

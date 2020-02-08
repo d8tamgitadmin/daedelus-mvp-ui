@@ -35,13 +35,6 @@ export default function invitationReducer(state=initialState.accountData, action
         case constants.GET_PUBLIC_ACCOUNTS_ERROR:
             return {...state, fetchingAccounts: false, accounts: [], accountsMessage: action.error}
 
-        case constants.CREATE_ACCOUNT_LINK:
-            return {...state};
-        case constants.CREATE_ACCOUNT_LINK_SUCCESS:
-            return {...state};
-        case constants.CREATE_ACCOUNT_ERROR:
-            return {...state};
-
         case constants.DELETE_ACCOUNT:
             return {...state}
         case constants.DELETE_ACCOUNT_SUCCESS:

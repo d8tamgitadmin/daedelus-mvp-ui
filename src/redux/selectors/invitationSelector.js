@@ -37,3 +37,14 @@ export const makeSelectTargetInvitationsErrorMessages = () => createSelector(
     makeSelectInviteData(),
     (substate) => substate.targetInvitesErrorMessage
 );
+
+export const makeSelectAccountLinks = () => createSelector(
+    makeSelectInviteData(),
+    (substate) => substate.accountLinks
+);
+
+export const makeSelectIsFetchingAccountLinks = () => createSelector(
+    makeSelectInviteData(),
+    (substate) => substate.isFetchingAccountLinks
+    
+)

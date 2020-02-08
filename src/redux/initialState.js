@@ -9,7 +9,10 @@ const initialState = {
         sourceInvitesErrorMessage: null,
         targetInvitesErrorMessage: null,
         sourceInvites:[],
-        targetInvites:[]
+        targetInvites:[],
+        accountLinks:[],
+        isFetchingAccountLinks:false,
+        inviteCount: 0,
     },
     authData:{
         currentUser: accountStorage.getUserData() || null
@@ -36,6 +39,14 @@ const initialState = {
         isFetchingSchemas:false,
         schemasErrorMessage:null,
         schemas:[],
+
+        schemaDefinition:null,
+        isCreatingSchemaDefinition:false,
+        schemaDefinitionErrorMessage: null,
+
+        schemaDefinitions:[],
+        isFetchingSchemaDefinitions:false,
+        schemaDefinitionsErrorMessage: null
     },
    
 }

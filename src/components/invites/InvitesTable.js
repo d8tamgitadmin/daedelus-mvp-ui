@@ -15,32 +15,9 @@ const useStyles = makeStyles(theme => {
 const InvitesTable = (props) => {
 
     const classes = useStyles();
-    const {sourceInvites, targetInvites} = props;
+    const {sourceInvites, targetInvites, handleReject,handleAccept} = props;
     
-    /*
-    public long id;
 
-    public Long sourceAccountId;
-
-    public String RequestingDID;
-
-    public String RequestingVerkey;
-
-    public String nonce;
-
-    public Long targetAccountId;
-
-    public String ResponseDID;
-
-    public String ResponseVerkey;
-
-    public InvitationStatus status;
-
-    public Date created;
-
-    public Date modified;
-
-    */
     return (
     
             <Table  size="small">
@@ -74,7 +51,7 @@ const InvitesTable = (props) => {
                             <TableCell>{row.ResponseVerkey}</TableCell>
                             <TableCell>{row.created != null ? row.created.split('T')[0] : ""}</TableCell>
                             <TableCell>{row.modified != null ? row.modified.split('T')[0] : ""}</TableCell>
-                            <TableCell><Button variant="outlined">Recall</Button></TableCell>
+                            <TableCell><Button onClick={handleReject(row.id)} variant="outlined">Recall</Button></TableCell>
                         </TableRow>
                     ))}
                     {targetInvites.map(row => (
@@ -90,7 +67,8 @@ const InvitesTable = (props) => {
                             <TableCell>{row.ResponseVerkey}</TableCell>
                             <TableCell>{row.created != null ? row.created.split('T')[0] : ""}</TableCell>
                             <TableCell>{row.modified != null ? row.modified.split('T')[0] : ""}</TableCell>
-                            <TableCell><Button variant="contained">Accept</Button><Button variant="outlined">Rejct</Button></TableCell>
+                            <TableCell><Button color="primary" onClick={handleAccept(row)} variant="contained">Accept</Button>
+                            <Button onClick={handleReject(row.id)} variant="outlined">Reject</Button></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

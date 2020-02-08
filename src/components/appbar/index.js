@@ -16,6 +16,9 @@ import * as authSelectors from "../../redux/selectors/authSelector";
 import * as accountActions from "../../redux/actions/accountActions";
 import * as accountSelectors from "../../redux/selectors/accountSelector";
 
+import * as invitationSelectors from "../../redux/selectors/invitationSelector";
+import * as invitationActions from "../../redux/actions/invitationActions";
+
 import MainNavList from "./MainNavList";
 import MainNavProfile from "./MainiNavProfile";
 
@@ -123,7 +126,7 @@ const MenuAppBar = (props) => {
     const [showAccountMenu, setAccountMenu] = useState(false);
     const [authenticated, setAuthentication] = useState(false);
 
-    const {currentAccount} = props;
+    const {currentAccount,inviteCount} = props;
 
     const handleMenuOpen = (e) => {
       setOpen(true)

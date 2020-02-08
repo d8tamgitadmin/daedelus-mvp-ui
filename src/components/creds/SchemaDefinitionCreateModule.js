@@ -42,76 +42,86 @@ const useStyles = makeStyles(theme => ({
 }
 
 
-  const schemaDefault = {
-      name:"",
-      version:"",
-      attributes:"",
-      accountId:"",
+  const schemaDefinitionDefault = {
+        id:0,
+        kycSchemaId:"",
+        schemaJson:"",
+        accountId:"",
+        credDefTag:"",
+        credDefConfigJson:"",
+        credDefId:"",
+        credDefJson:"",
       created: generateDate(),
       modified: generateDate()
   };
 
 
 
-const SchemaCreateModule = props => {
+const SchemaDefinitionCreateModule = props => {
     const classes = useStyles();
-    const {onSubmit} = props;
+    const {onSubmit, schemas} = props;
     const [open, setOpen] = useState(false);
-    const [schema, setSchema] = useState(schemaDefault);
+    const [schemaDefinition, setSchemaDefintion] = useState(schemaDefinitionDefault);
 
     const handleSubmit = e => {
         e.preventDefault();
-        onSubmit(schema);
+        // current account gets set in saga
+        onSubmit(schemaDefinition);
         setOpen(false);
     };
 
     const handleChange = input => e => {
         e.preventDefault();
-        setSchema({...schema,[input]:e.target.value});
+        setSchemaDefintion({...schemaDefinition,[input]:e.target.value});
+    }
+
+    const handleSchemaChange = input => e => {
+        e.preventDefault();
+        setSchemaDefintion({...schemaDefinition,
+            ["kycSchemaId"]:e.target.value.id,
+            ["schemaJson"]: e.target.value.json
+        });
+        
     }
 
     return (
         <React.Fragment>
             <Button variant="contained" color="primary"
             onClick={() =>setOpen(true)}>
-                Create Schema
+                Create Schema Definition
             </Button>
             <Dialog className={classes.dialog} open={open}
             onClose={() => setOpen(false)}
             aria-labelledby="form-create-schema-title">
                 <form noValidate>
                     <DialogTitle 
-                    id="form-dialog-title">Create New Schema</DialogTitle>
+                    id="form-dialog-title">Create New Schema Definition</DialogTitle>
                     <DialogContent>
                         <Grid container spacing={4}>
                             <Grid xs={12} item>
-                                <TextField 
-                                    required
+                            <TextField
+                                    id="new-schema-definition"
+                                    select
                                     fullWidth
-                                    hintText="Enter Schema Name"
-                                    label="Schema Name"
-                                    onChange={handleChange("name")}
-                                />
+                                    label="Schema"
+                                    onChange={handleSchemaChange("schema")}
+                                    helperText="Please select a Schema"
+                                >
+                                    {schemas.map(schema => (
+                                    <MenuItem key={schema.name} value={schema}>
+                                        {schema.name + " " + schema.version}
+                                    </MenuItem>
+                                    ))}
+                            </TextField>
                             </Grid>
                             <Grid xs={12} item>
                                 <TextField
                                     required
                                     fullWidth
-                                    hintText="Enter Schema Version"
-                                    label="Schema Version"
-                                    onChange={handleChange("version")}
+                                    hintText="Enter Schema Definition Tag"
+                                    label="Schema Definition Tag"
+                                    onChange={handleChange("credDefTag")}
                                     />
-                            </Grid>
-                            <Grid xs={12} item>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    multiline
-                                    rows="8"
-                                    hintText="Enter JSON Array of Attributes"
-                                    label="Attributes"
-                                    onChange={handleChange("attributes")}
-                                />
                             </Grid>
                         </Grid>
                     </DialogContent>
@@ -130,4 +140,4 @@ const SchemaCreateModule = props => {
 
 };
 
-export default SchemaCreateModule;
+export default SchemaDefinitionCreateModule;

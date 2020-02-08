@@ -2,6 +2,10 @@ import React from 'react';
 
 import { NavLink, withRouter } from "react-router-dom";
 
+import { compose, bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';

@@ -20,7 +20,10 @@ import * as authSelectors from "../../redux/selectors/authSelector";
 import * as accountActions from "../../redux/actions/accountActions";
 import * as accountSelectors from "../../redux/selectors/accountSelector";
 
-import AccountsList from "./AccountsList";
+import * as invitationActions from "../../redux/actions/invitationActions";
+import * as invitationSelectors from "../../redux/selectors/invitationSelector";
+
+import AccountLinksList from "./AccountLinksList";
 import ShowLinked from "./ShowLinked";
 import SearchBar from "./SearchBar";
 import CurrentAccountSlide from "../common/CurrentAccountSlide";
@@ -58,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchPage = props => {
 
-    const {currentUser,accounts, isFetchingAccounts, accountsMessage,currentAccount} = props;
+    const {currentUser,accountLinks, isFetchingAccounts, accountsMessage,account} = props;
     const classes = useStyles();
 
     const [state, setState] = useState({
@@ -83,27 +86,21 @@ const SearchPage = props => {
         }
     }
 
-    const goToAccountProfile = account => e => {     
-        e.preventDefault();  
-        props.actions.getAccountDetail(account);
-        props.nav.push(`/accounts/detail/${account.id}`)    
-    }
 
-    const handleCreateLink = (account, targetAccount)  => {
-       console.log(account);
-       console.log(targetAccount);
-       props.actions.createAccountLink(account, targetAccount);
-        
-    }
 
     useEffect(() => {
-        checkAuthentication();       
-        props.actions.getPublicAccounts();
+        checkAuthentication(); 
+        if(account) {
+            props.actions.getAccountLinks(account.id)      
+        }
+       
     },[]);
 
     const handleRefresh = e => {
         e.preventDefault();
-
+        if(account) {
+            props.actions.getAccountLinks(account.id)      
+        }
     }
 
 
@@ -125,27 +122,10 @@ const SearchPage = props => {
                 </Grid>
             </div>
             <Container className={classes.container}>
-            <Paper className={classes.paper}>
                 <Grid container item xs={12}>
-                    
-                    <Grid item xs={9}>
-                        <SearchBar nameFilter={nameFilter} setNameFilter={setNameFilter}/>
-                    </Grid>
-                    <Grid item xs={3}>
-                         <ShowLinked value={showLinked} setValue={setShowlinked}/>
-                    </Grid>
-                   
-                </Grid>
-                </Paper>
-                <Grid container item xs={12}>
-                    <AccountsList 
+                    <AccountLinksList 
                     isFetching={isFetchingAccounts} 
-                    accounts={accounts} 
-                    showLinked={showLinked}
-                    filter={nameFilter}
-                    currentAccount={currentAccount}
-                    goToAccountProfile={goToAccountProfile}
-                    handleCreateLink={handleCreateLink}
+                    accountLinks={accountLinks} 
                     />
                 </Grid>
             </Container>
@@ -156,7 +136,7 @@ const SearchPage = props => {
 SearchPage.propTypes = {
     currentUser: PropTypes.object,
     currentAccount: PropTypes.object,
-    accounts: PropTypes.array,
+    accountLinks: PropTypes.object,
     isFetchingAccounts: PropTypes.bool.isRequired,
     accountsMessage: PropTypes.object,
     classes: PropTypes.object,
@@ -167,9 +147,9 @@ SearchPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
     currentUser: authSelectors.makeSelectCurrentUser(),
-    currentAccount: accountSelectors.makeSelectAccount(),
-    accounts: accountSelectors.makeSelectPublicAccounts(),
-    isFetchingAccounts: accountSelectors.makeSelectIsFetchingPublicAccounts(),
+    account: accountSelectors.makeSelectAccount(),
+    accountLinks: invitationSelectors.makeSelectAccountLinks(),
+    isFetchingAccounts: invitationSelectors.makeSelectIsFetchingAccountLinks(),
     accountsMessage: accountSelectors.makeSelectPublicAccountsMessage()
 });
 
@@ -177,7 +157,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions:{
             ...bindActionCreators(authActions, dispatch),
-            ...bindActionCreators(accountActions, dispatch)
+            ...bindActionCreators(accountActions, dispatch),
+            ...bindActionCreators(invitationActions, dispatch)
         },nav: {
             push: function() {
               return dispatch(push.apply(this, arguments))

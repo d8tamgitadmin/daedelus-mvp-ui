@@ -27,9 +27,10 @@ import { withStyles,makeStyles } from '@material-ui/core/styles';
 import { CircularProgress, Container, Typography, Button, Paper, Grid, Tabs, Tab, TabPanel,IconButton } from '@material-ui/core';
 
 
-import CurrentAccountSlide from "../common/CurrentAccountSlide";
 import SchemaCreateModule from "./SchemaCreateModule";
 import SchemaTable from "./SchemaTable";
+import SchemaDefinitionTable from "./SchemaDefinitionTable";
+import SchemaDefinitionCreateModule from "./SchemaDefinitionCreateModule";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 
 const CredentialsPage = (props) => {
 
-    const {currentAccount, schemas, isFetchingSchemas} = props;
+    const {currentAccount, schemas, isFetchingSchemas, schemaDefinitions, isFetchingSchemaDefinitions} = props;
     const classes = useStyles();
 
     const [tabValue, setTabValue] = React.useState(0);
@@ -84,7 +85,10 @@ const CredentialsPage = (props) => {
 
     useEffect(() => {
         checkAuthentication();
-        props.actions.getKycSchemas();
+        if(currentAccount){
+            props.actions.getKycSchemas(currentAccount.id);
+            props.actions.getKycSchemaDefinitions(currentAccount.id);
+        }
     },[]);
 
     const handleChange = (event, newValue) => {
@@ -94,10 +98,18 @@ const CredentialsPage = (props) => {
     const handleCreateSchemaSubmit = schema => {
         props.actions.createKycSchema(schema, currentAccount)
     };
+    const handleCreateSchemaDefinitionSubmit = schemaDefinition => {
+        props.actions.createKycSchemaDefinition(schemaDefinition, currentAccount);
+    }
 
     const handleRefresh = e => {
         e.preventDefault();
         props.actions.getKycSchemas();
+    }
+
+    const handleRefreshDefinitions = e => {
+        e.preventDefault();
+        props.actions.getKycSchemaDefinitions(currentAccount.id);
     }
 
     return(
@@ -153,6 +165,46 @@ const CredentialsPage = (props) => {
             </Grid>
         </Container>
       }
+      {tabValue ==1 &&
+        <Container className={classes.container}>
+            <Grid container item xs={12}>
+                <Paper className={classes.paperHeader}>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Typography variant="h6" component="h5">
+                                Definitions
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+
+                        </Grid>
+                        <Grid item xs={3}>
+                            <SchemaDefinitionCreateModule schemas={schemas} onSubmit={handleCreateSchemaDefinitionSubmit}/>
+                        </Grid>
+                        <Grid item xs={2}>
+                        <IconButton onClick={handleRefreshDefinitions} variant="out" color="secondary">
+                            <RefreshIcon />
+                        </IconButton>
+                        </Grid>
+                    </Grid>
+                    
+                </Paper>
+            </Grid>
+            <Grid container item xs={12}>
+                <Paper className={classes.paper}>
+                <Grid container item xs={12}>
+                
+                {isFetchingSchemaDefinitions && schemaDefinitions != null ? <CircularProgress/> :
+                            <SchemaDefinitionTable schemaDefinitions={schemaDefinitions}/>
+                        }
+                </Grid>
+                
+                  
+                </Paper>
+            </Grid>
+        </Container>
+      
+      }
 
       
     </React.Fragment>
@@ -169,7 +221,15 @@ CredentialsPage.propTypes = {
     isCreatingSchema: PropTypes.bool,
     isFetchingSchemas: PropTypes.bool,
     schemaErrorMessage: PropTypes.string,
-    schemasErrorMessage: PropTypes.string
+    schemasErrorMessage: PropTypes.string,
+
+    schemaDefinition:PropTypes.object,
+    isCreatingSchemaDefinition:PropTypes.bool,
+    schemaDefinitionErrorMessage:PropTypes.string,
+
+    schemaDefinitions:PropTypes.object,
+    isFetchingSchemaDefinitions:PropTypes.bool,
+    schemaDefinitionsErrorMessage: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -181,6 +241,12 @@ const mapStateToProps = createStructuredSelector({
     isFetchingSchemas: kycSelectors.makeSelectIsFetchingKycSchemas(),
     schemasErrorMessage: kycSelectors.makeSelectGetKycSchemasErrorMessage(),
     schemaErrorMessage: kycSelectors.makeSelectCreateKycSchemaErrorMessage(),
+    schemaDefinition:kycSelectors.makeSelectSchemaDefinition(),
+    isCreatingSchemaDefinition:kycSelectors.makeSelectIsCreatingSchemaDefinition(),
+    schemaDefinitionErrorMessage: kycSelectors.makeSelectSchemaDefinitionErrorMessage(),
+    schemaDefinitions: kycSelectors.makeSelectSchemaDefinitions(),
+    isFetchingSchemaDefinitions: kycSelectors.makeSelectIsFetchingSchemaDefinitions(),
+    schemaDefinitionsErrorMessage: kycSelectors.makeSelectSchemaDefinitionsErrorMessage()
 });
 
 const mapDispatchToProps =  (dispatch) => {

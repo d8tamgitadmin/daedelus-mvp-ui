@@ -78,27 +78,7 @@ export function setCurretAccount(account){
     }
 }
 
-export function createAccountLink(currentAccount, targetAccount){
-    return {
-        type:constants.CREATE_ACCOUNT_LINK,
-        currentAccount: currentAccount,
-        targetAccount: targetAccount
-    }
-}
 
-export function createAccountLinkSuccess(invite){
-    return {
-        type: constants.CREATE_ACCOUNT_LINK_SUCCESS,
-        invite: invite
-    }
-};
-
-export function createAccountLinkError(error){
-    return {
-        type: constants.CREATE_ACCOUNT_LINK_ERROR,
-        error: error
-    }
-}
 
 export function deleteAccount(id, currentUserId){
     return {

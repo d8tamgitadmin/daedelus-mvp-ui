@@ -15,6 +15,12 @@ export const POST_CREATE_CREDENTIAL_SCHEMA = {
     'route':  `${API_SERVER}/api/v1/agent/credentials/schema`
 }
 
+export const POST_CREATE_CREDENTIAL_SCHEMA_DEFINITION = {
+    'method': 'POST',
+    'route':  `${API_SERVER}/api/v1/agent/credentials/schemadefinition`
+}
+
+
 export async function CreateUserWallet(wallet){
     let token = await oktaAuth.getAccessToken();
 
@@ -28,21 +34,39 @@ export async function CreateUserWallet(wallet){
     });
 }
 
-export const POST_RELATIONSHIP_REQUEST = {
+export const POST_LINK_REQUEST = {
     'method': 'POST',
-    'route':  `${API_SERVER}/api/v1/agent/invitations/request`
+    'route':  `${API_SERVER}/api/v1/agent/link/request`
+};
+
+export const POST_LINK_RESPONSE = {
+    'method': 'POST',
+    'route':  `${API_SERVER}/api/v1/agent/link/response`
 }
 
 export async function CreateRelationshipRequest(request) {
     let token = await oktaAuth.getAccessToken();
 
-    return fetch(POST_RELATIONSHIP_REQUEST.route, {
-        method: POST_RELATIONSHIP_REQUEST.method,
+    return fetch(POST_LINK_REQUEST.route, {
+        method: POST_LINK_REQUEST.method,
         withCredentials: true,
         mode:'cors',
         credentials:'include',
         headers: AUTH_HEADERS(token),
         body: JSON.stringify(request)
+    });
+}
+
+export async function CreateLinkResponse(response){
+    let token = await oktaAuth.getAccessToken();
+
+    return fetch(POST_LINK_RESPONSE.route, {
+        method: POST_LINK_RESPONSE.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token),
+        body: JSON.stringify(response)
     });
 }
 
@@ -56,6 +80,19 @@ export async function CreateCredentialSchema(model) {
         credentials:'include',
         headers: AUTH_HEADERS(token),
         body: JSON.stringify(model)
+    });
+}
+
+export async function CreateCredentialSchemaDefinition(schemaDefinition){
+    let token = await oktaAuth.getAccessToken();
+
+    return fetch(POST_CREATE_CREDENTIAL_SCHEMA_DEFINITION.route, {
+        method: POST_CREATE_CREDENTIAL_SCHEMA_DEFINITION.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token),
+        body: JSON.stringify(schemaDefinition)
     });
 }
 

@@ -38,43 +38,54 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const AccountsList = props => {
+const AccountLinksList = props => {
 
-    const {isFetching, accounts, currentAccount,showLinked, filter,goToAccountProfile,handleCreateLink} = props;
+    const {isFetching, accountLinks} = props;
     const classes = useStyles();
-
+   
     return(
     <React.Fragment>
+    <Paper className={classes.paper}>
+                <Grid container item xs={12}>
+                        <Grid item xs={1}></Grid>
+                
+                        <Grid item xs={2}>
+                        ReqId
+                        </Grid>
+                        <Grid item xs={3}>
+                        Identifier
+                        </Grid>
+                        <Grid item xs={4}>
+                        Verkey
+                        </Grid>
+                        <Grid item xs={2}>
+            
+             
+                </Grid>
+                  
+                </Grid>
+                </Paper>
         {isFetching ? <CircularProgress/> :
-          accounts && accounts
-          .filter(account => currentAccount != null && account.id !== currentAccount.id)
-          .filter(account => account.accountType === "Personal" || showLinked === true)
-          .filter(account => filter == null? true: account.name.includes(filter))
-          .map((account,i) => (
+            accountLinks && accountLinks
+           
+          .map((linkedAccount) => (
              
             <Paper className={classes.paper}>
                 <Grid container item xs={12}>
-                
-                    
-                    <Grid item xs={3}>
-                    <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500" onClick={goToAccountProfile(account)}  />
+                    <Grid item xs={1}>
+                    <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500"  />
+                </Grid>
+                <Grid item xs={2}>
+                 {JSON.parse(linkedAccount.nymResponse).reqId}
                 </Grid>
                 <Grid item xs={3}>
-                <Typography variant="subtitle1">
-                            {account.name}
-                        </Typography>
+                 {JSON.parse(linkedAccount.nymResponse).identifier}
                 </Grid>
-                <Grid item xs={3}>
-                <Typography variant="subtitle2">
-                            {account.accountType}
-                        </Typography>
+                <Grid item xs={4}>
+                 {JSON.parse(linkedAccount.nymResponse).operation.verkey}
                 </Grid>
-                <Grid item xs={3}>
-                { account.accountType === "Personal"? <CreateLinkModule 
-                currentAccount={currentAccount}
-                 targetAccount={account}
-                 handleCreateLink={handleCreateLink} /> :  
-                  <Button disabled variant="outlined">Linked</Button> }
+                <Grid item xs={2}>
+                <Button variant="contained" color="secondary"> Un-Link</Button>
              
                 </Grid>
                   
@@ -85,4 +96,4 @@ const AccountsList = props => {
     </React.Fragment>)
 };
 
-export default AccountsList;
+export default AccountLinksList;

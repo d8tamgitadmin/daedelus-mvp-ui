@@ -15,6 +15,9 @@ import * as authSelectors from "../../redux/selectors/authSelector";
 import * as accountActions from "../../redux/actions/accountActions";
 import * as accountSelectors from "../../redux/selectors/accountSelector";
 
+import * as invitationActions from "../../redux/actions/invitationActions";
+import * as invitationSelectors from "../../redux/selectors/invitationSelector";
+
 import { makeStyles, fade } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, InputBase,Menu, MenuItem, Paper, Grid, CircularProgress,
@@ -87,10 +90,13 @@ const SearchAppBar = props => {
 
     const classes = useStyles();
 
+    useEffect(() => {
+        props.actions.getPublicAccounts();
+    },[]);
+
 
     const handleChange =  e => {
       e.preventDefault();
-      debugger;
       setNameFilter(e.target.value);
       setanchorSearchBarEl(e.currentTarget);
     }
@@ -132,7 +138,6 @@ const SearchAppBar = props => {
             {isFetching ? <CircularProgress/> :
           accounts && accounts
           .filter(account => currentAccount != null && account.id !== currentAccount.id)
-          .filter(account => account.accountType === "Personal" || showLinked === true)
           .filter(account => nameFilter == null? true: account.name.includes(nameFilter))
           .map((account,i) => (
              <MenuItem >
@@ -189,7 +194,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
       actions:{
           ...bindActionCreators(authActions, dispatch),
-          ...bindActionCreators(accountActions, dispatch)
+          ...bindActionCreators(accountActions, dispatch),
+          ...bindActionCreators(invitationActions,dispatch)
       },nav: {
           push: function() {
             return dispatch(push.apply(this, arguments))

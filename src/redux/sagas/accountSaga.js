@@ -2,7 +2,7 @@ import { spawn, call, put, select, takeLatest,take } from 'redux-saga/effects';
 
 import * as accountApi from "../../api/accountApi";
 import * as agentApi from "../../api/agentApi";
-import * as inviteApi from "../../api/inviteApi";
+
 import * as ActionTypes from "../constants/accountConstants";
 
 
@@ -14,8 +14,6 @@ import {
     createAccountError,
     getPublicAccountsSuccess,
     getPublicAccountsError,
-    createAccountLinkSuccess,
-    createAccountLinkError,
     deleteAccountError,
     deleteAccountSuccess
      } 
@@ -92,72 +90,13 @@ function* getPublicAccountsSaga(action){
     }
 }
 
-function* createAccountLinkSaga(action){
 
-        const generateDate = () => {
-            const today = new Date();
-            let dd = today.getDate().toString();
-            let mm = (today.getMonth()+1).toString(); 
-            let yyyy = today.getFullYear().toString();
-            if(dd<10) 
-            {
-                dd='0'+dd;
-            } 
-
-            if(mm<10) 
-            {
-                mm='0'+mm;
-            } 
-            return yyyy+"-"+mm+"-"+dd;
-    }
-
-    try {
-
-        let {currentAccount, targetAccount} = action;
-        let request = {
-            walletName: currentAccount.wallets[0].walletId+targetAccount.id,
-            walletCredentials:"{}",
-            walletkey: currentAccount.wallets[0].walletKey+targetAccount.id,
-        }
-
-        // Generate new Wallet DID and Verakey, specify wallet key and credentials
-        const createNewDIDResponse = yield call(agentApi.CreateRelationshipRequest,request);
-        const createNewDIDResponseData = yield call([createNewDIDResponse, createNewDIDResponse.json]);
-
-        // Construct Invite with new did, verkey, and nonce
-        debugger;
-        let invite ={
-            sourceAccountId: currentAccount.id,
-            RequestingDID: createNewDIDResponseData.did,
-            RequestingVerkey: createNewDIDResponseData.verkey,
-            nonce:createNewDIDResponseData.nonce,
-            targetAccountId: targetAccount.id,
-            ResponseDID:"",
-            ResponseVerkey:"",
-            status: "Pending",
-            "created": generateDate(),
-            "modified": generateDate()
-        };
-        const createNewInviteResponse = yield call(inviteApi.CreateInvite, invite);
-        const createNewInviteResponseData = yield call([createNewInviteResponse, createNewInviteResponse.json]);
-        debugger;
-        if(createNewInviteResponseData){
-            yield put(createAccountLinkSuccess(createNewInviteResponseData))
-        } else {
-            yield put(createAccountLinkError("Failed"));
-        }
-
-    } catch(e){
-        yield put(createAccountLinkError(e));
-    }
-}
 
 function* accountRootSaga() {
     yield takeLatest(ActionTypes.GET_USER_ACCOUNTS, getUserAccountSaga); 
     yield takeLatest(ActionTypes.CREATE_ACCOUNT, createAccountSaga);
     yield takeLatest(ActionTypes.GET_PUBLIC_ACCOUNTS, getPublicAccountsSaga);
-    yield takeLatest(ActionTypes.CREATE_ACCOUNT_LINK, createAccountLinkSaga);
-    yield takeLatest(ActionTypes.DELETE_ACCOUNT, deleteAccountSaga);
+        yield takeLatest(ActionTypes.DELETE_ACCOUNT, deleteAccountSaga);
 }
 
 export default accountRootSaga;

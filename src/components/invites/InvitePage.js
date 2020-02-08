@@ -67,7 +67,7 @@ const InvitePage = (props) => {
 
     const classes = useStyles();
 
-    const {currentAccount, getTargetInvites,sourceInvites,targetInvites, isFetchingTargetInvites, isFetchingSourceInvites} = props;
+    const {currentAccount, sourceInvites,targetInvites, isFetchingTargetInvites, isFetchingSourceInvites} = props;
 
     const [state, setState] = useState({
         authenticated:null,
@@ -99,6 +99,16 @@ const InvitePage = (props) => {
        
     }
 
+    const handleReject = invitationid => e => {
+        e.preventDefault();
+        props.actions.rejectInvite(invitationid, currentAccount.id);
+    }
+
+    const handleAccept = invitation => e => {
+        e.preventDefault();
+        props.actions.acceptInvite(invitation, currentAccount);
+    }
+
     return(
 
         <React.Fragment>
@@ -128,7 +138,12 @@ const InvitePage = (props) => {
             <Paper className={classes.paper}>
             {isFetchingSourceInvites == true || isFetchingTargetInvites == true ?
                          <CircularProgress/> :
-                            <InvitesTable  sourceInvites={sourceInvites} targetInvites={targetInvites}/>}
+                            <InvitesTable  
+                            sourceInvites={sourceInvites} 
+                            targetInvites={targetInvites}
+                            handleReject={handleReject}
+                            handleAccept={handleAccept}
+                            />}
                 </Paper>
         </Grid>
        
