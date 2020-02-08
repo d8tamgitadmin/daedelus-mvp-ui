@@ -12,17 +12,24 @@ import { createStructuredSelector } from 'reselect';
 import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
+import RefreshIcon from '@material-ui/icons/Refresh';
+
 import * as authActions from "../../redux/actions/authActions";
 import * as authSelectors from "../../redux/selectors/authSelector";
 
 import * as accountActions from "../../redux/actions/accountActions";
 import * as accountSelectors from "../../redux/selectors/accountSelector";
 
+import * as kycSelectors from "../../redux/selectors/kycSelectors";
+import * as kycActions from "../../redux/actions/kycActions";
+
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container, Typography, Button, Paper, Grid, Tabs, Tab, TabPanel } from '@material-ui/core';
+import { CircularProgress, Container, Typography, Button, Paper, Grid, Tabs, Tab, TabPanel,IconButton } from '@material-ui/core';
 
 
 import CurrentAccountSlide from "../common/CurrentAccountSlide";
+import SchemaCreateModule from "./SchemaCreateModule";
+import SchemaTable from "./SchemaTable";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,7 +50,8 @@ const useStyles = makeStyles(theme => ({
         margin:theme.spacing(3, 0, 2),
         background:'white',
         height:"30vh"    ,
-        width:"80vw"
+        width:"80vw",
+        overflow:"scroll"
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -57,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 
 const CredentialsPage = (props) => {
 
-    const {currentAccount} = props;
+    const {currentAccount, schemas, isFetchingSchemas} = props;
     const classes = useStyles();
 
     const [tabValue, setTabValue] = React.useState(0);
@@ -76,13 +84,21 @@ const CredentialsPage = (props) => {
 
     useEffect(() => {
         checkAuthentication();
-    });
+        props.actions.getKycSchemas();
+    },[]);
 
     const handleChange = (event, newValue) => {
         setTabValue(newValue);
       };
 
+    const handleCreateSchemaSubmit = schema => {
+        props.actions.createKycSchema(schema, currentAccount)
+    };
 
+    const handleRefresh = e => {
+        e.preventDefault();
+        props.actions.getKycSchemas();
+    }
 
     return(
 
@@ -105,16 +121,19 @@ const CredentialsPage = (props) => {
                     <Grid container>
                         <Grid item xs={3}>
                             <Typography variant="h6" component="h5">
-                                Onboarding
+                                Schemas
                             </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
 
                         </Grid>
                         <Grid item xs={3}>
-                        <Button variant="contained" color="primary" >
-                            KYC Account
-                        </Button>
+                           <SchemaCreateModule onSubmit={handleCreateSchemaSubmit}/>
+                        </Grid>
+                        <Grid item xs={2}>
+                        <IconButton onClick={handleRefresh} variant="out" color="secondary">
+                            <RefreshIcon />
+                        </IconButton>
                         </Grid>
                     </Grid>
                     
@@ -123,15 +142,12 @@ const CredentialsPage = (props) => {
             <Grid container item xs={12}>
                 <Paper className={classes.paper}>
                 <Grid container item xs={12}>
-                <Grid item xs={4}>
-                        <Typography variant="subtitle1" component="h4">
-                            Accounts In Progress
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                        
-                    </Grid>
+                
+                {isFetchingSchemas ? <CircularProgress/> :
+                            <SchemaTable schemas={schemas}/>
+                        }
                 </Grid>
+                
                   
                 </Paper>
             </Grid>
@@ -147,19 +163,32 @@ const CredentialsPage = (props) => {
 
 CredentialsPage.propTypes = {
     currentUser: PropTypes.object,
-    currentAccount: PropTypes.object
+    currentAccount: PropTypes.object,
+    schemas: PropTypes.object,
+    schema: PropTypes.object,
+    isCreatingSchema: PropTypes.bool,
+    isFetchingSchemas: PropTypes.bool,
+    schemaErrorMessage: PropTypes.string,
+    schemasErrorMessage: PropTypes.string
 };
 
 const mapStateToProps = createStructuredSelector({
     currentUser: authSelectors.makeSelectCurrentUser(),
-    currentAccount: accountSelectors.makeSelectAccount()
+    currentAccount: accountSelectors.makeSelectAccount(),
+    schemas: kycSelectors.makeSelectKycSchemas(),
+    schema: kycSelectors.makeSelectKycSchema(),
+    isCreatingSchema: kycSelectors.makeSelectIsCreatingKycSchema(),
+    isFetchingSchemas: kycSelectors.makeSelectIsFetchingKycSchemas(),
+    schemasErrorMessage: kycSelectors.makeSelectGetKycSchemasErrorMessage(),
+    schemaErrorMessage: kycSelectors.makeSelectCreateKycSchemaErrorMessage(),
 });
 
 const mapDispatchToProps =  (dispatch) => {
 return {
   actions: {
     ...bindActionCreators(authActions, dispatch),
-    ...bindActionCreators(accountActions, dispatch)
+    ...bindActionCreators(accountActions, dispatch),
+    ...bindActionCreators(kycActions, dispatch)
   },nav: {
     push: function() {
       return dispatch(push.apply(this, arguments))

@@ -29,6 +29,14 @@ const initialState = {
         isWorkingUserAccount: false,
         error: null,
     },
+    kycData:{
+        schema:null,
+        isCreatingSchema:false,       
+        schemaErrorMessage:null,
+        isFetchingSchemas:false,
+        schemasErrorMessage:null,
+        schemas:[],
+    },
    
 }
 

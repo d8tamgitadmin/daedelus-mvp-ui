@@ -11,6 +11,7 @@ import authSaga from "./sagas/userDataSaga";
 import poolSaga from "./sagas/poolSaga";
 import accountSaga from "./sagas/accountSaga";
 import inviteSaga from "./sagas/inviteSaga";
+import kycSaga from "./sagas/kycSaga";
 
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 
@@ -44,6 +45,7 @@ export default function configureStore(initialState) {
    sagaMiddleware.run(poolSaga);
    sagaMiddleware.run(accountSaga);
    sagaMiddleware.run(inviteSaga);
+   sagaMiddleware.run(kycSaga);
                 
    
     return store;

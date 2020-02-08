@@ -10,6 +10,11 @@ export const POST_CREATE_WALLET = {
     'route':  `${API_SERVER}/api/v1/agent/account/onboard`
 }
 
+export const POST_CREATE_CREDENTIAL_SCHEMA = {
+    'method': 'POST',
+    'route':  `${API_SERVER}/api/v1/agent/credentials/schema`
+}
+
 export async function CreateUserWallet(wallet){
     let token = await oktaAuth.getAccessToken();
 
@@ -38,6 +43,19 @@ export async function CreateRelationshipRequest(request) {
         credentials:'include',
         headers: AUTH_HEADERS(token),
         body: JSON.stringify(request)
+    });
+}
+
+export async function CreateCredentialSchema(model) {
+    let token = await oktaAuth.getAccessToken();
+
+    return fetch(POST_CREATE_CREDENTIAL_SCHEMA.route, {
+        method: POST_CREATE_CREDENTIAL_SCHEMA.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token),
+        body: JSON.stringify(model)
     });
 }
 
