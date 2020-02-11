@@ -105,3 +105,24 @@ export function getKycSchemaDefinitionsError(error){
         error: error
     }
 };
+
+export function createKycSchemaDefinitionOffer(offer,currentAccount){
+    return {
+        type: ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER,
+        offer: offer,
+        currentAccount: currentAccount
+    }
+}
+
+export function createkySchemaDefinitionOfferSuccess(){
+    return {
+        type: ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER_SUCCESS
+    }
+}
+
+export function createKycSchemaDefinitionOfferError(error){
+    return {
+        type: ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER_ERROR,
+        error:error
+    }
+}

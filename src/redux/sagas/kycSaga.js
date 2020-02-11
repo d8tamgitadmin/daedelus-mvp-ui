@@ -15,7 +15,10 @@ import {
     createKycSchemaDefinitionError,
     getKycSchemaDefinitionsError,
     getKycSchemaDefinitionsSuccess,
-    getKycSchemaDefinitions
+    getKycSchemaDefinitions,
+    createKycSchemaDefinitionOffer,
+    createkySchemaDefinitionOfferSuccess,
+    createKycSchemaDefinitionOfferError
 } from "../actions/kycActions";
 
 
@@ -114,7 +117,7 @@ function* createKycSchemaDefinitionSaga(action){
                 json:action.schemaDefinition.schemaJson, //ulimately schema json
                 tag: action.schemaDefinition.credDefTag
             };
-            debugger;
+           
             const createKycSchemaDefinitionLedgerResponse = yield call(agentAPI.CreateCredentialSchemaDefinition, createKycSchemaDefinitionLedger);
             const createKycSchemaDefinitionLedgerResponseData = yield call([createKycSchemaDefinitionLedgerResponse,createKycSchemaDefinitionLedgerResponse.json]);
             if(createKycSchemaDefinitionLedgerResponseData){
@@ -146,11 +149,70 @@ function* createKycSchemaDefinitionSaga(action){
     }
 }
 
+function* createKycSchemaDefinitionOfferSaga(action){
+    try {
+
+        /*
+           private String credDefId;
+    private String walletId;
+    private String walletKey;
+    */
+        let offer = {
+            credDefId: action.offer.credDefId,
+            walletId: action.currentAccount.wallets[0].walletId,
+            walletKey: action.currentAccount.wallets[0].walletKey,
+        };
+
+        const createOfferResponse = yield call(agentAPI.CreateCredentialOffer, offer);
+        const createOfferResponseData = yield call([createOfferResponse,createOfferResponse.json]);
+        if(createOfferResponseData) {
+            // ok we created the offer how do we store it?
+            /*
+            public long id;
+
+            public CredentialStatus status;
+
+            public Long sourceAccountId;
+
+            public Long targetAccountId;
+
+            public String credDefId;
+
+            public String credDefJson;
+
+            public String credReqMetadataJson;
+
+            public String credOffer;
+
+            public Date created;
+
+            public Date modified;
+            */
+        let credOffer ={
+            id:0,
+            status:"Offered",
+            
+        }
+
+
+
+            yield put(createKycSchemaDefinitionOfferSuccess())
+
+        } else {
+            yield put(createKycSchemaDefinitionOfferError("Failed to create offer"));
+        }
+
+    }catch(e){
+        yield put(createKycSchemaDefinitionOfferError(e))
+    }
+}
+
 function* kycRootSaga() {
     yield takeLatest(ActionTypes.CREATE_KYC_SCHEMA, createKycSchemaSaga); 
     yield takeLatest(ActionTypes.GET_KYC_SCHEMAS, getAllKycSchemasSaga);
     yield takeLatest(ActionTypes.CREATE_KYC_SCHEMA_DEFINITION, createKycSchemaDefinitionSaga);
-    yield takeLatest(ActionTypes.GET_KYC_SCHEMA_DEFINITIONS, getAllKycSchemaDefinitionsSaga)
+    yield takeLatest(ActionTypes.GET_KYC_SCHEMA_DEFINITIONS, getAllKycSchemaDefinitionsSaga);
+    yield takeLatest(ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER, createKycSchemaDefinitionOfferSaga);
 }
 
 export default kycRootSaga;

@@ -82,7 +82,9 @@ function* createInviteLinkSaga(action){
             walletName: currentAccount.wallets[0].walletId,
             walletCredentials:currentAccount.wallets[0].walletKey,
             walletkey: currentAccount.wallets[0].walletId,
-        }
+            targetDID: targetAccount.wallets[0].did
+        };
+       
         // Generate new Wallet DID and Verakey, specify wallet key and credentials
         const createNewDIDResponse = yield call(agentApi.CreateRelationshipRequest,request);
         const createNewDIDResponseData = yield call([createNewDIDResponse, createNewDIDResponse.json]);
@@ -93,9 +95,10 @@ function* createInviteLinkSaga(action){
                 RequestingVerkey: createNewDIDResponseData.verkey,
                 nonce:createNewDIDResponseData.nonce,
                 targetAccountId: targetAccount.id,
-                ResponseDID:"",
+                ResponseDID:targetAccount.wallets[0].did,
                 ResponseVerkey:"",
                 status: "Pending",
+                nymRequest:createNewDIDResponseData.nymRequest,
                 "created": generateDate(),
                 "modified": generateDate()
             };
@@ -133,7 +136,6 @@ function* rejectAccountLinkSaga(action){
 // most import code of the platform right here:
 function* acceptAccountLinkSaga(action) {
     let {invitation, account} = action;
-debugger;
     const generateDate = () => {
         const today = new Date();
         let dd = today.getDate().toString();
@@ -152,47 +154,19 @@ debugger;
     }
 
     try {
-
-        // first ledger business
-        /*
-         public String targetWalletkey;
-
-    public String targetWalletCredentials;
-
-    public String sourceDID;
-
-    public String sourceVerkey;
-    */
     let connectionResolveDto = {
             targetWalletkey: account.wallets[0].walletId,
             targetWalletCredentials: account.wallets[0].walletKey,
+            targetDID: invitation.ResponseDID,
             sourceDID: invitation.RequestingDID,
             sourceVerkey: invitation.RequestingVerkey,
+            nymRequest: invitation.nymRequest
     };
-    debugger;
+    
     const createLinkResponse = yield call(agentApi.CreateLinkResponse, connectionResolveDto);
     const createLinkResponseData = yield call([createLinkResponse, createLinkResponse.json]);
     if(createLinkResponseData){
-        /*
-         public long id;
-
-    public long firstAccountId;
-
-    public long secondAccountId;
-
-    public String did;
-
-    public String firstAccountDid;
-
-    public String secondAccountDid;
-
-    @Column(length=10000)
-    public String nymResponse;
-
-    public Date created;
-
-    public Date modified;
-    */
+      
         let accountLink = {
             id:0,
             firstAccountId: invitation.sourceAccountId,
@@ -203,7 +177,6 @@ debugger;
             created:generateDate(),
             modified: generateDate()
         };
-        debugger;
         const createAccountLinkResponse = yield call(inviteApi.CreateAccountLink, accountLink);
         const createAccountLinkResponseData = yield call([createAccountLinkResponse,createAccountLinkResponse.json]);
         if(createAccountLinkResponseData){

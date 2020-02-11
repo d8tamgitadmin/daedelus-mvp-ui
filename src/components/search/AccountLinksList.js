@@ -8,6 +8,7 @@ import { withStyles,makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 
 import CreateLinkModule from "./CreateLinkModule";
+import CredentialOfferModule from "../creds/CredentialOfferModule";
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,31 +38,22 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
-
 const AccountLinksList = props => {
 
-    const {isFetching, accountLinks} = props;
+    const {isFetching, accountLinks,accounts,currentAccount, schemaDefinitions,onCredOfferSubmit} = props;
     const classes = useStyles();
-   
+
+      
     return(
     <React.Fragment>
     <Paper className={classes.paper}>
                 <Grid container item xs={12}>
                         <Grid item xs={1}></Grid>
                 
-                        <Grid item xs={2}>
-                        ReqId
+                        <Grid item xs={9}>
+                        Account Link Verkey
                         </Grid>
-                        <Grid item xs={3}>
-                        Identifier
-                        </Grid>
-                        <Grid item xs={4}>
-                        Verkey
-                        </Grid>
-                        <Grid item xs={2}>
-            
-             
-                </Grid>
+            <Grid item xs={2}>Action</Grid>
                   
                 </Grid>
                 </Paper>
@@ -72,21 +64,43 @@ const AccountLinksList = props => {
              
             <Paper className={classes.paper}>
                 <Grid container item xs={12}>
-                    <Grid item xs={1}>
+                 <Grid item xs={12}>
+                    {accounts
+                    .filter(account => account.id != currentAccount.id)
+                    .filter(account => account.id == linkedAccount.firstAccountId || account.id == linkedAccount.secondAccountId)
+                    [0].name}
+                 </Grid>
+                <Grid item xs={1}>
                     <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500"  />
                 </Grid>
-                <Grid item xs={2}>
-                 {JSON.parse(linkedAccount.nymResponse).reqId}
+                <Grid item xs={9}>
+                {JSON.parse(linkedAccount.nymResponse).result.txn.data.verkey}
                 </Grid>
-                <Grid item xs={3}>
-                 {JSON.parse(linkedAccount.nymResponse).identifier}
-                </Grid>
-                <Grid item xs={4}>
-                 {JSON.parse(linkedAccount.nymResponse).operation.verkey}
-                </Grid>
+            
                 <Grid item xs={2}>
                 <Button variant="contained" color="secondary"> Un-Link</Button>
              
+                </Grid>
+                <Grid container item xs={12}>
+                    <Grid item xs={2}>
+                    <Typography component="subtitle2">
+                        Proofs
+                    </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CredentialOfferModule 
+
+                        schemaDefinitions={schemaDefinitions} 
+                        currentAccount={accounts
+                            .filter(account => account.id != currentAccount.id)
+                        .filter(account => account.id == linkedAccount.firstAccountId || account.id == linkedAccount.secondAccountId)
+                    [0]} 
+                        onSubmit={onCredOfferSubmit}
+                        />
+                    </Grid>
                 </Grid>
                   
                 </Grid>

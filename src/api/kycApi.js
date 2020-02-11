@@ -40,6 +40,20 @@ export const PUT_SCHEMA_DEFINITION = {
     'route': `${API_SERVER}/api/v1/kyc/schemadefinition`
 }
 
+export const GET_CRED_OFFERS = {
+    'method':"GET",
+    'route':(id) => `${API_SERVER}/api/v1/credentialoffers/${id}`
+}
+
+export const POST_CRED_OFFER = {
+    'method': 'POST',
+    'route': `${API_SERVER}/api/v1/credentialoffers`
+}
+export const PUT_CRED_OFFER = {
+    'method': 'PUT',
+    'route': `${API_SERVER}/api/v1/credentialoffers`
+}
+
 export async function CreateSchema(schema){
     let token = await oktaAuth.getAccessToken();
     
@@ -114,6 +128,44 @@ export async function PutSchemaDefinition(schemaDefinition) {
         headers: AUTH_HEADERS(token),
         body: JSON.stringify(schemaDefinition)
       })
+};
+
+export async function GetCredentialOffers(accountId){
+    let token = await oktaAuth.getAccessToken();
+
+   return fetch(GET_CRED_OFFERS.route(accountId), {
+        method: GET_CRED_OFFERS.method,
+        withCredentials: true,
+        mode: 'cors',
+        credentials: 'include',
+        headers: AUTH_HEADERS(token)
+      })
+};
+
+export async function PostCredentialOffer(credOffer){
+    let token = await oktaAuth.getAccessToken();
+    
+    return fetch(POST_CRED_OFFER.route, {
+        method: POST_CRED_OFFER.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token),
+        body: JSON.stringify(credOffer)
+    });
+};
+
+export async function PutCredentialOffer(credOffer){
+    let token = await oktaAuth.getAccessToken();
+    
+    return fetch(PUT_CRED_OFFER.route, {
+        method: PUT_CRED_OFFER.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token),
+        body: JSON.stringify(credOffer)
+    });
 };
 
 

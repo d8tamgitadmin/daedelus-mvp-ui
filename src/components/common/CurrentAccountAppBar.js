@@ -48,24 +48,27 @@ const CurrentAccountAppBar = (props) => {
     const {goToAccountProfile,account} = props;
     
     return (account != null &&  
-        <Fab variant="extended" className={classes.root}>
-                <Grid container >
-               
+        <Paper variant="extended" className={classes.root}>
+                <Grid container >               
                     <Grid item xs={2}>
                         <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500" onClick={goToAccountProfile(account)}  />
                     </Grid>
-                    <Grid item xs={2}>
-                        {account.name}
-                    </Grid>
-                    <Grid item xs={6}>
-                    DID: {account.wallets != null && account.wallets.length > 0 &&  account.wallets[0].did}
-                    </Grid>
+                    <Grid justify="flex-start" item container xs={8}>
+                        <Grid item xs={12}>
+                        <Typography component="subtitle1">
+                            DID: {account.wallets != null && account.wallets.length > 0 &&  account.wallets[0].did}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            {account.name}
+                        </Grid>
+                    </Grid> 
                     <Grid item xs={2}>
                         <KycVerificationBadge />
                     </Grid>
                    
                </Grid>
-              </Fab> 
+              </Paper> 
       
     )
 }

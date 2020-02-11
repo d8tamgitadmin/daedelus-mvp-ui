@@ -12,6 +12,7 @@ const initialState = {
         targetInvites:[],
         accountLinks:[],
         isFetchingAccountLinks:false,
+        accountLinksErrorMessage:null,
         inviteCount: 0,
     },
     authData:{

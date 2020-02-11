@@ -12,9 +12,7 @@ import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
 import { withStyles,makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import {CircularProgress,Container,Paper, Grid, Typography, Button, CssBaseline} from '@material-ui/core';
 
 
 import * as authActions from "../../redux/actions/authActions";
@@ -87,6 +85,20 @@ const UserPage = (props) => {
     return(
 
         <React.Fragment>
+        <CssBaseline/>
+            <div className={classes.heroContent}>
+                <Grid container maxWidth="sm">
+                    <Grid xs={8} item>
+                        <Typography variant="subtitle1" align="left" color="textPrimary" gutterBottom>
+                        Manage Account Users
+                        </Typography>
+                    </Grid>
+                    <Grid xs={2} item>
+                    </Grid>
+                    <Grid xs={2} item>
+                    </Grid>
+                </Grid>
+            </div>
         <Container className={classes.container}>
             <Grid container item xs={12}>
                 <Grid item xs ={6}>

@@ -124,7 +124,7 @@ const CredentialsPage = (props) => {
       >
         <Tab label="Schema" />
         <Tab label="Definition" />
-        <Tab label="Offers" />
+
       </Tabs>
       {tabValue == 0 && 
       <Container className={classes.container}>

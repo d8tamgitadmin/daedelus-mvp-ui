@@ -23,6 +23,9 @@ import * as accountSelectors from "../../redux/selectors/accountSelector";
 import * as invitationActions from "../../redux/actions/invitationActions";
 import * as invitationSelectors from "../../redux/selectors/invitationSelector";
 
+import * as kycSelectors from "../../redux/selectors/kycSelectors";
+import * as kycActions from "../../redux/actions/kycActions";
+
 import AccountLinksList from "./AccountLinksList";
 import ShowLinked from "./ShowLinked";
 import SearchBar from "./SearchBar";
@@ -61,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchPage = props => {
 
-    const {currentUser,accountLinks, isFetchingAccounts, accountsMessage,account} = props;
+    const {currentUser,accountLinks, isFetchingAccounts,accounts,schemaDefinitions, account} = props;
     const classes = useStyles();
 
     const [state, setState] = useState({
@@ -103,6 +106,10 @@ const SearchPage = props => {
         }
     }
 
+    const onSubmitCredKycOffer = (offer,currentAccount) => {
+        props.actions.createKycSchemaDefinitionOffer(offer,currentAccount);
+    }
+
 
     return (
         <React.Fragment>
@@ -124,6 +131,10 @@ const SearchPage = props => {
             <Container className={classes.container}>
                 <Grid container item xs={12}>
                     <AccountLinksList 
+                    currentAccount={account}
+                    accounts={accounts}
+                    schemaDefinitions={schemaDefinitions}
+                    onCredOfferSubmit={onSubmitCredKycOffer}
                     isFetching={isFetchingAccounts} 
                     accountLinks={accountLinks} 
                     />
@@ -139,6 +150,8 @@ SearchPage.propTypes = {
     accountLinks: PropTypes.object,
     isFetchingAccounts: PropTypes.bool.isRequired,
     accountsMessage: PropTypes.object,
+    schemaDefinitions: PropTypes.object,
+    accounts: PropTypes.object,
     classes: PropTypes.object,
     match:PropTypes.object,
     location: PropTypes.object,
@@ -150,7 +163,9 @@ const mapStateToProps = createStructuredSelector({
     account: accountSelectors.makeSelectAccount(),
     accountLinks: invitationSelectors.makeSelectAccountLinks(),
     isFetchingAccounts: invitationSelectors.makeSelectIsFetchingAccountLinks(),
-    accountsMessage: accountSelectors.makeSelectPublicAccountsMessage()
+    accountsMessage: accountSelectors.makeSelectPublicAccountsMessage(),
+    schemaDefinitions: kycSelectors.makeSelectSchemaDefinitions(),
+    accounts: accountSelectors.makeSelectPublicAccounts()
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -158,7 +173,9 @@ const mapDispatchToProps = (dispatch) => {
         actions:{
             ...bindActionCreators(authActions, dispatch),
             ...bindActionCreators(accountActions, dispatch),
-            ...bindActionCreators(invitationActions, dispatch)
+            ...bindActionCreators(invitationActions, dispatch),
+            ...bindActionCreators(kycActions, dispatch)
+
         },nav: {
             push: function() {
               return dispatch(push.apply(this, arguments))

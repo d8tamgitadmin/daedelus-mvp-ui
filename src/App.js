@@ -51,7 +51,7 @@ export default function App() {
                     <SecureRoute path="/ledger" exact={true} component={Ledger}/>
                     <SecureRoute path="/about" exact={true} component={About}/>
                     <SecureRoute path="/profile" exact={true} component={ProfilePage}/>
-                    <SecureRoute path="/search" exact={true} component={SearchPage}/>
+                    <SecureRoute path="/members" exact={true} component={SearchPage}/>
                     <SecureRoute path="/users" exact={true} component={UserPage}/>
                     <Route path='/implicit/callback' component={ImplicitCallback}/>
                   </MenuAppBar>  

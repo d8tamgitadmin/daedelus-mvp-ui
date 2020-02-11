@@ -37,29 +37,30 @@ import BusinessIcon from '@material-ui/icons/Business';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 
 const MenuNavList = (props) => {
+
+     
     return (
         <React.Fragment>
         <List>
         <ListItem button component={NavLink} to="/invites">
                 <ListItemIcon> 
-                        <Badge badgeContent={4} color="secondary">
-                              <MailIcon />
-                         </Badge>
+                <MailIcon />
                   </ListItemIcon>
                 <ListItemText primary="Inbox" />
-          </ListItem>
-          <ListItem button component={NavLink} to="/accounts">
-                <ListItemIcon><BusinessIcon/></ListItemIcon>
-                <ListItemText primary="Accounts" />
-          </ListItem>
-          <ListItem button component={NavLink} to="/search">
-                <ListItemIcon><HomeWorkIcon/></ListItemIcon>
-                <ListItemText primary="Members" />
           </ListItem>
           <ListItem button component={NavLink} to="/users">
                 <ListItemIcon><PeopleIcon/></ListItemIcon>
                 <ListItemText primary="Users" />
           </ListItem>
+          <ListItem button component={NavLink} to="/accounts">
+                <ListItemIcon><BusinessIcon/></ListItemIcon>
+                <ListItemText primary="Accounts" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/members">
+                <ListItemIcon><HomeWorkIcon/></ListItemIcon>
+                <ListItemText primary="Members" />
+          </ListItem>
+         
           <ListItem button component={NavLink} to="/credentials">
                 <ListItemIcon><BookmarkIcon/></ListItemIcon>
                 <ListItemText primary="Credentials" />
