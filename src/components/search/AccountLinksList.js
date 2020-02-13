@@ -65,10 +65,14 @@ const AccountLinksList = props => {
             <Paper className={classes.paper}>
                 <Grid container item xs={12}>
                  <Grid item xs={12}>
-                    {accounts
+                    {() => {
+                        let acc = accounts
                     .filter(account => account.id != currentAccount.id)
                     .filter(account => account.id == linkedAccount.firstAccountId || account.id == linkedAccount.secondAccountId)
-                    [0].name}
+                    [0];
+                        return acc != null ? acc.name : "No Name";
+                    }
+                    }
                  </Grid>
                 <Grid item xs={1}>
                     <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/500"  />
@@ -90,18 +94,27 @@ const AccountLinksList = props => {
                     <Grid item xs={10}>
 
                     </Grid>
-                    <Grid item xs={12}>
-                        <CredentialOfferModule 
+                    <Grid container item xs={12}>
+                        <Grid item xs= {2}>
+                             <CredentialOfferModule 
 
-                        schemaDefinitions={schemaDefinitions} 
-                        currentAccount={accounts
-                            .filter(account => account.id != currentAccount.id)
-                        .filter(account => account.id == linkedAccount.firstAccountId || account.id == linkedAccount.secondAccountId)
-                    [0]} 
-                        onSubmit={onCredOfferSubmit}
-                        />
+                            schemaDefinitions={schemaDefinitions} 
+                            targetAccount={accounts
+                                    .filter(account => account.id != currentAccount.id)
+                                    .filter(account => account.id == linkedAccount.firstAccountId || account.id == linkedAccount.secondAccountId)
+                                    [0]} 
+                            onSubmit={onCredOfferSubmit}
+                            />
+                        </Grid>
+                            <Grid item xs={2}>
+                                <Button variant="contained" color="primary"> Chat</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" color="primary"> Request KYC</Button>
+                            </Grid>
                     </Grid>
-                </Grid>
+                      
+                    </Grid>
                   
                 </Grid>
                 </Paper>

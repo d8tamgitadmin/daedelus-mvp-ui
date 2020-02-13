@@ -26,8 +26,13 @@ import * as accountActions from "../../redux/actions/accountActions";
 import * as inviteSelectors from "../../redux/selectors/invitationSelector";
 import * as inviteActions from "../../redux/actions/invitationActions";
 
+// todo
+import * as credActions from "../../redux/actions/kycActions";
+import * as credSelectors from "../../redux/selectors/kycSelectors";
+
 import CurrentAccountSlide from "../common/CurrentAccountSlide";
 import InvitesTable from './InvitesTable';
+import CredsTable from "./CredsTable";
 
 
 const useStyles = makeStyles(theme => ({
@@ -67,7 +72,8 @@ const InvitePage = (props) => {
 
     const classes = useStyles();
 
-    const {currentAccount, sourceInvites,targetInvites, isFetchingTargetInvites, isFetchingSourceInvites} = props;
+    const {currentAccount, sourceInvites,targetInvites, isFetchingTargetInvites, isFetchingSourceInvites,
+        isGettingOffers, offers, offersError} = props;
 
     const [state, setState] = useState({
         authenticated:null,
@@ -86,6 +92,7 @@ const InvitePage = (props) => {
         if(currentAccount != null){
             props.actions.getTargetInvites(currentAccount.id);
             props.actions.getSourceInvites(currentAccount.id);
+            props.actions.getKycCredentialOffers(currentAccount.id);
         }
        
     },[]);
@@ -95,6 +102,7 @@ const InvitePage = (props) => {
         if(currentAccount != null) {
             props.actions.getTargetInvites(currentAccount.id);
             props.actions.getSourceInvites(currentAccount.id);
+            props.actions.getKycCredentialOffers(currentAccount.id);
         }
        
     }
@@ -146,6 +154,16 @@ const InvitePage = (props) => {
                             />}
                 </Paper>
         </Grid>
+        <Grid container item xs={12}>
+            <Paper className={classes.paper}>
+            {isGettingOffers == true  ?
+                         <CircularProgress/> :
+                            <CredsTable  
+                            offers={offers} 
+                            
+                            />}
+            </Paper>
+        </Grid>
        
         
         </Container>
@@ -157,7 +175,10 @@ InvitePage.propTypes = {
     classes: PropTypes.object,
     match:PropTypes.object,
     location: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
+    offers: PropTypes.object,
+    offersError: PropTypes.string,
+    isGettingOffers: PropTypes.bool
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -170,7 +191,9 @@ const mapStateToProps = createStructuredSelector({
     targetInvites: inviteSelectors.makeSelectTargetInvitations(),
     isFetchingTargetInvites: inviteSelectors.makeSelectIsFetchingTargetInvitations(),
     targetInvitesErrorMessage: inviteSelectors.makeSelectTargetInvitationsErrorMessages(),
-    
+    offers: credSelectors.makeSelectOffers(),
+    isGettingOffers: credSelectors.makeSelectIsGettingOffers(),
+    offersError: credSelectors.makeSelectOffersMessage()
 });
 
 const mapDispatchToProps =  (dispatch) => {
@@ -178,7 +201,8 @@ return {
   actions: {
     ...bindActionCreators(authActions, dispatch),
     ...bindActionCreators(accountActions, dispatch),
-    ...bindActionCreators(inviteActions, dispatch)
+    ...bindActionCreators(inviteActions, dispatch),
+    ...bindActionCreators(credActions, dispatch)
   },nav: {
     push: function() {
       return dispatch(push.apply(this, arguments))

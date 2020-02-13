@@ -47,7 +47,11 @@ const initialState = {
 
         schemaDefinitions:[],
         isFetchingSchemaDefinitions:false,
-        schemaDefinitionsErrorMessage: null
+        schemaDefinitionsErrorMessage: null,
+
+        offers:[],
+        isGettingOffers:false,
+        offersMessage:null
     },
    
 }

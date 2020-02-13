@@ -30,7 +30,14 @@ export default function kycReducer(state=initialState.kycData, action){
             return {...state, isFetchingSchemaDefinitions:false, schemaDefinitionsErrorMessage:null, schemaDefinitions:action.schemaDefinitions}
         case constants.GET_KYC_SCHEMA_DEFINITIONS_ERROR:
             return {...state, isFetchingSchemaDefinitions:false, schemaDefinitionsErrorMessage:action.error, schemaDefinitions:[]}
-    
+
+        //todo cred
+        case constants.GET_KYC_CREDENTIALS_OFFERS:
+            return {...state, isGettingOffers:true, offersMessage:null, offers:[]}
+        case constants.GET_KYC_CREDENTIALS_OFFERS_SUCCESS:
+            return {...state, isGettingOffers: false, offersMessage:null, offers:action.offers}
+        case constants.GET_KYC_CREDENTIALS_OFFERS_ERROR:
+            return {...state, isGettingOffers: false, offersMessage: action.error, offers:[]}
 
         default:
             return state;

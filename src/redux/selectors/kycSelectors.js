@@ -63,3 +63,18 @@ export const makeSelectSchemaDefinitionsErrorMessage = () => createSelector(
     makeSelectKycData(),
     (substate) => substate.schemaDefinitionsErrorMessage
 );
+
+export const makeSelectOffers = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.offers
+)
+
+export const makeSelectIsGettingOffers = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.isGettingOffers
+)
+
+export const makeSelectOffersMessage = () => createSelector(
+    makeSelectKycData(),
+    (substate) => substate.offersMessage
+)

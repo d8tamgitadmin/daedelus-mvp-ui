@@ -54,6 +54,12 @@ export const PUT_CRED_OFFER = {
     'route': `${API_SERVER}/api/v1/credentialoffers`
 }
 
+export const DELETE_CRED_OFFER = {
+    'method':"DELETE",
+    'route':(id) => `${API_SERVER}/api/v1/credentialoffers/${id}`
+}
+
+
 export async function CreateSchema(schema){
     let token = await oktaAuth.getAccessToken();
     
@@ -167,5 +173,17 @@ export async function PutCredentialOffer(credOffer){
         body: JSON.stringify(credOffer)
     });
 };
+
+export async function DeleteCredentialOffer(credOfferId) {
+    let token = await oktaAuth.getAccessToken();
+
+    return fetch(DELETE_CRED_OFFER.route(credOfferId), {
+        method: DELETE_CRED_OFFER.method,
+        withCredentials: true,
+        mode:'cors',
+        credentials:'include',
+        headers: AUTH_HEADERS(token)
+    });
+}
 
 

@@ -95,6 +95,8 @@ const SearchPage = props => {
         checkAuthentication(); 
         if(account) {
             props.actions.getAccountLinks(account.id)      
+            props.actions.getKycSchemas(account.id);
+            props.actions.getKycSchemaDefinitions(account.id);
         }
        
     },[]);
@@ -106,8 +108,9 @@ const SearchPage = props => {
         }
     }
 
-    const onSubmitCredKycOffer = (offer,currentAccount) => {
-        props.actions.createKycSchemaDefinitionOffer(offer,currentAccount);
+    const onSubmitCredKycOffer = (offer,targetAccount) => {
+        debugger;
+        props.actions.createKycSchemaDefinitionOffer(offer,targetAccount, account);
     }
 
 
@@ -146,9 +149,9 @@ const SearchPage = props => {
 
 SearchPage.propTypes = {
     currentUser: PropTypes.object,
-    currentAccount: PropTypes.object,
+    account: PropTypes.object,
     accountLinks: PropTypes.object,
-    isFetchingAccounts: PropTypes.bool.isRequired,
+    isFetchingAccounts: PropTypes.bool,
     accountsMessage: PropTypes.object,
     schemaDefinitions: PropTypes.object,
     accounts: PropTypes.object,

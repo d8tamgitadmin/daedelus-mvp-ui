@@ -45,12 +45,13 @@ const CreateLinkModule = props => {
         <React.Fragment>
        
             <Button onClick={()=> setOpen(true)} color="primary" variant="contained">Link</Button>
-            {currentAccount && (
+            {currentAccount && targetAccount && (
             <Dialog className={classes.dialog} open={open}
             onClose={() => setOpen(false)}
             aria-labelledby="form-dialog-title">
                 <form noValidate onSubmit={handleSubmit}>
                 <DialogTitle id="form-dialog-title">Invite Account</DialogTitle>
+                
                 <DialogContent>
                 <Grid container spacing={4} >
                         <Grid xs={12} item>

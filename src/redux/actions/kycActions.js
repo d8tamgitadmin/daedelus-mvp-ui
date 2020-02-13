@@ -106,15 +106,16 @@ export function getKycSchemaDefinitionsError(error){
     }
 };
 
-export function createKycSchemaDefinitionOffer(offer,currentAccount){
+export function createKycSchemaDefinitionOffer(offer,targetAccount,currentAccount){
     return {
         type: ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER,
         offer: offer,
-        currentAccount: currentAccount
+        currentAccount: currentAccount,
+        targetAccount: targetAccount
     }
 }
 
-export function createkySchemaDefinitionOfferSuccess(){
+export function createKycSchemaDefinitionOfferSuccess(){
     return {
         type: ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER_SUCCESS
     }
@@ -123,6 +124,27 @@ export function createkySchemaDefinitionOfferSuccess(){
 export function createKycSchemaDefinitionOfferError(error){
     return {
         type: ActionTypes.CREATE_KYC_SCHEMA_DEFINITION_OFFER_ERROR,
+        error:error
+    }
+}
+
+export function getKycCredentialOffers(accountId){
+    return {
+        type: ActionTypes.GET_KYC_CREDENTIALS_OFFERS,
+        accountId: accountId
+    }
+}
+
+export function getKycCredentialOffersSuccess(offers){
+    return {
+        type: ActionTypes.GET_KYC_CREDENTIALS_OFFERS_SUCCESS,
+        offers: offers
+    }
+}
+
+export function getKycCrednetialOffersError(error){
+    return {
+        type:ActionTypes.GET_KYC_CREDENTIALS_OFFERS_ERROR,
         error:error
     }
 }

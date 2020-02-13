@@ -32,13 +32,15 @@ const useStyles = makeStyles(theme => ({
 
 const CredentialOfferModule = props => {
     const classes = useStyles();
-    const {onSubmit, currentAccount, schemaDefinitions} = props;
+    const {onSubmit, targetAccount, schemaDefinitions} = props;
     const [open, setOpen] = useState(false);
     const [offer, setOffer] = useState(defaultOffer);
 
     const handleSubmit = e => {
-        e.preventDefault();      
-        onSubmit(offer, currentAccount);
+        e.preventDefault();   
+        debugger;   
+        onSubmit(offer, targetAccount);
+        setOffer(defaultOffer);
         setOpen(false);
     };
 
@@ -68,7 +70,7 @@ const CredentialOfferModule = props => {
                                     fullWidth
                                     disabled
                                     label="Account Name"
-                                    value={currentAccount.name}
+                                    value={targetAccount.name}
                                 />
                             </Grid>                            
                             <Grid xs={12} item>
